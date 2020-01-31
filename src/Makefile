@@ -1,5 +1,5 @@
 # Project-wise definitions
-PROJECT = GGJ2020
+PROJECT = ggj2020
 
 # Make flags
 #MAKEFLAGS := -j$(NUMBER_OF_PROCESSORS)
