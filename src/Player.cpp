@@ -39,9 +39,6 @@
  * Local variables definition
  * *************************************/
 
-static GsSprite heartSpr;
-static SsVag chargeSnd;
-
 /* *************************************
  *  Local prototypes declaration
  * *************************************/
@@ -52,8 +49,6 @@ static SsVag chargeSnd;
 
 void PlayerInit(void)
 {
-    GfxSpriteFromFile("DATA\\SPRITES\\HEART.TIM", &heartSpr);
-    SfxUploadSound("DATA\\SOUNDS\\CHARGE.VAG", &chargeSnd);
 }
 
 Player::Player(const playern player_n, const bool active, GsSprite &spr, GsSprite &sprRes) :

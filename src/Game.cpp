@@ -41,6 +41,7 @@
  * ****************************************************************************/
 
 static GsSprite playerSpr, player2Spr, resourceBar;
+static GsSprite test_sprite;
 
 /* *****************************************************************************
  * Local prototypes declaration
@@ -124,8 +125,7 @@ static void GameInit(const size_t players)
 static void GameInitFiles(void)
 {
     PlayerInit();
-    GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
-    GfxSpriteFromFile("DATA\\SPRITES\\PLAYER2.TIM", &player2Spr);
+    GfxSpriteFromFile("DATA\\SPRITES\\test.TIM", &test_sprite);
 }
 
 static void GameLoop(const size_t players)
@@ -149,6 +149,9 @@ static void GameLoop(const size_t players)
         cam
     };
 
+    test_sprite.x = (X_SCREEN_RESOLUTION >> 1) - 32;
+    test_sprite.y = (Y_SCREEN_RESOLUTION >> 1) - 32;
+
     while (GfxIsBusy())
         ;
 
@@ -162,6 +165,9 @@ static void GameLoop(const size_t players)
             ;
 
         GfxClear();
+
+        GfxSortSprite(&test_sprite);
+
         pl.render(cam);
         GfxDrawScene();
     }

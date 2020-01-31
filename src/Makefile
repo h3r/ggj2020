@@ -17,8 +17,8 @@ DEFINE = -DFIXMATH_FAST_SIN -DVIDEO_MODE=VMODE_PAL
 #DEFINE += -DPSXSDK_DEBUG
 
 # Compiler flags
-LIBS= -lfixmath -lpsx
-CC_FLAGS = -Wall -c -Os -ffunction-sections -fdata-sections -Wfatal-errors -Werror -flto
+LIBS= -lfixmath -lm
+CC_FLAGS = -Wall -c -O0 -ffunction-sections -fdata-sections -Wfatal-errors -Werror -flto
 CXX_FLAGS = $(CC_FLAGS) -std=c++17
 
 # Path definitions
@@ -77,7 +77,7 @@ SOUND_OBJECTS = $(addprefix $(OBJ_SOUNDS_DIR)/,	)
 BMP2TIM = bmp2tim
 SRC_SPRITES_PATH = $(PROJECT_DIR)/src/sprites
 OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
-SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/,)
+SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, test.TIM)
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.
