@@ -63,7 +63,7 @@ bool Level::load(const char* filename){
     size_t levelSize = MAX_LEVEL_SIZE_X*MAX_LEVEL_SIZE_Y;
 
     /* Get buffer address where file data is contained. */
-    const uint8_t *const buffer = IOLoadFile(strFilePath, &eSize);
+    const uint8_t *const buffer = IOLoadFile(filename, &eSize);
 
     if(!buffer || eSize == IO_INVALID_FILE_SIZE || eSize != (levelSize-2))
     	return false;
@@ -71,7 +71,7 @@ bool Level::load(const char* filename){
     width = buffer[0];
     height = buffer[1];
 
-    for(int i=0; i<levelSize; i++){
+    for (size_t i=0; i<levelSize; i++) {
     	if(buffer[i+2]<LEVEL_MAX_TILES) return false;
     	tiles[i] = buffer[i+2];
     }

@@ -10,7 +10,7 @@
  * Includes
  * ****************************************************************************/
 
-#include "GlobalData.h"
+#include "GlobalData.hpp"
 #include "Game.hpp"
 #include "Gfx.h"
 #include "Menu.h"
@@ -43,7 +43,6 @@
 
 static Level level;
 
-static GsSprite playerSpr;
 static GsSprite test_sprite;
 
 /* *****************************************************************************
