@@ -172,6 +172,15 @@ unsigned int Player::GetRecordTime()
     return rand_min_max(MIN_RECORD_TIME, MAX_RECORD_TIME);
 }
 
+void Player::Update(GlobalData &gData)
+{
+    short new_x, new_y;
+
+    pad.handler();
+    UpdatePosition(new_x, new_y);
+    UpdateCollision(gData, new_x, new_y);
+}
+
 void Player::UpdateCollision(GlobalData &gData, const short new_x, const short new_y)
 {
     short level_w, level_h;
@@ -179,14 +188,20 @@ void Player::UpdateCollision(GlobalData &gData, const short new_x, const short n
 
     gData.level.GetDimensions(level_w, level_h);
 
-    if ((new_x - exc) < 0 || (new_y - exc) < 0)
+    if (new_x < 0 || (new_y - exc) < 0)
         return;
     else if ((new_x + (exc << 1)) > level_w || (new_y + exc) > level_h)
         return;
 
     GameEntity* collided_entity = gData.Players.collides(this, new_x, new_y);
+
     if (!collided_entity) {
-        x = new_x;
+
+        if (!gData.level.IsTileSolid(new_x, new_y))
+        {
+            x = new_x;
+            //y = new_y;
+        }
     }
     else
     {
@@ -246,15 +261,16 @@ void Player::UpdateCollision(GlobalData &gData, const short new_x, const short n
         }
 
     }
+
+    // Check interactions now
+    CheckInteractions(gData);
 }
 
-void Player::Update(GlobalData &gData)
+void Player::UpdatePosition(short &new_x, short &new_y)
 {
-    const short gravity = 2;
-
-    short new_x = x;
-    short new_y = y + gravity;
-    pad.handler();
+    static const short gravity = 2;
+    new_x = x;
+    new_y = y + gravity;
 
     switch (state)
     {
@@ -299,10 +315,6 @@ void Player::Update(GlobalData &gData)
         default:
             break;
     }
-
-    // Check interactions now
-    CheckInteractions(gData);
-
 }
 
 void Player::CheckInteractions(GlobalData &gData)
@@ -316,11 +328,11 @@ void Player::CheckInteractions(GlobalData &gData)
         case RIGHT:
             if((x + 64) < it->x)
             {
-                it->active = false;    
+                it->active = false;
             }
             else if(x > (it->x + it->size))
             {
-                it->active = false;    
+                it->active = false;
             }
             else
             {
@@ -332,11 +344,11 @@ void Player::CheckInteractions(GlobalData &gData)
             if(x > (it->x + it->size))
             {
                 it->active = false;
-            }  
+            }
             else if((x + 64) < it->x)
             {
                 it->active = false;
-            }  
+            }
             else
             {
                 it->active = true;
@@ -345,8 +357,6 @@ void Player::CheckInteractions(GlobalData &gData)
             continue;
         }
     }
-    
-    UpdateCollision(gData, new_x, new_y);
 }
 
 enum Player::playern Player::getId() const
@@ -361,15 +371,8 @@ void Player::getPos(short &x, short &y) const
 }
 
 void Player::Push(int x, int y){
-    x += x;
-    y += y;
-}
-
-bool Player::CreateCopy(int x, int y){
-    /*todo*/
-    (void)x;
-    (void)y;
-    return true;
+    this->x += x;
+    this->y += y;
 }
 
 void Player::Render(const Camera &camera)
@@ -401,6 +404,20 @@ void Player::Render(const Camera &camera)
     if (state != prev_state)
     {
         ani->Repeat();
+    }
+
+    if (record_timer)
+        record_timer--;
+    else
+    {
+        const size_t i = rand_min_max(0, LAST_MOVEMENTS_BUF_SIZE - 1);
+
+        last_sprites[i] = ani->getSprite();
+        last_x[i] = x;
+        last_y[i] = y;
+
+        // Restart timer.
+        record_timer = GetRecordTime();
     }
 
     switch (dir)

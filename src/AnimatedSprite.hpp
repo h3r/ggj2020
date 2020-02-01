@@ -34,6 +34,7 @@ public:
     void Repeat();
     unsigned char GetSprAttribute();
     void SetSprAttribute(unsigned char attr);
+    GsSprite getSprite() const;
 
 private:
     const animation_config c;

@@ -115,7 +115,7 @@ void AnimatedSprite::PreRender()
 
     if (prev_v != v || prev_u != u)
     {
-        // Readjust sprite x/y if u/v is modified
+        // Read just sprite x/y if u/v is modified
         // before Player sends new information.
         SetPos(x, y);
     }
@@ -168,6 +168,11 @@ void AnimatedSprite::SetPos(const short x, const short y)
 
     this->x = x;
     this->y = y;
+}
+
+GsSprite AnimatedSprite::getSprite() const
+{
+    return spr;
 }
 
 void AnimatedSprite::getDimensions(short &w, short &h) const

@@ -146,6 +146,31 @@ bool Level::LoadAssets(){
 	return ret;
 }
 
+bool Level::IsTileSolid(short x, short y)
+{
+	short map_w, map_h;
+
+	GetDimensions(map_w, map_h);
+
+	if (x > map_w || y > map_h)
+		return false;
+
+	const short column = x % TILE_SIZE;
+	const short row = y / TILE_SIZE;
+	const size_t offset = column + (row * width);
+
+	const uint8_t t = tiles[offset];
+
+	if (t < LEVEL_MAX_TILES)
+	{
+		printf("t=%d,off=%d,x=%d,y=%d\n", t, offset, x, y);
+		if (t == LEVEL_TILE_FLOOR)
+			return true;
+	}
+
+	return false;
+}
+
 void Level::GetDimensions(short& w, short& h) const{
 	w = width * TILE_SIZE;
 	h = height * TILE_SIZE;

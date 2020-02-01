@@ -88,7 +88,6 @@ public:
     void SetState(pl_state state);
     void Hit(unsigned int hp_loss);
     void Push(int x, int y);
-    bool CreateCopy(int x, int y);
     void Reset(){/*todo*/}
     void GetLastMovements(const short **last_x_buf, const short **last_y_buf, const GsSprite **spr_buf) const __attribute__((nonnull));
 
@@ -104,6 +103,7 @@ private:
     box b;
     unsigned int record_timer;
 
+    void UpdatePosition(short &new_x, short &new_y);
     void UpdateCollision(GlobalData &gData, short new_x, short new_y);
     unsigned int GetRecordTime();
 };

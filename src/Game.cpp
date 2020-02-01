@@ -139,9 +139,12 @@ static void GameInitFiles(void)
     LoadCharTileSet();
 }
 
+
+
 static void GameLoop(const size_t players)
 {
     Camera cam;
+    static RainSystem rain;
 
     // Players
     Player player_array[2] =
@@ -150,8 +153,8 @@ static void GameLoop(const size_t players)
         {Player::PLAYER_TWO, players > Player::PLAYER_TWO, gatete}
     };
 
-    player_array[0].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 64);
-    player_array[1].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 64);
+    player_array[0].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 128);
+    player_array[1].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 128);
 
     // Dirty hack, but I want PlayerCopy to inherit from GameEntity!
     PlayerCopy plcopy[2][16] =
@@ -217,8 +220,6 @@ static void GameLoop(const size_t players)
         level
     };
 
-    RainSystem rain;
-
     // cam.Shake(5, 10);
 
     if (player_array[0].isActive())
@@ -246,6 +247,9 @@ static void GameLoop(const size_t players)
         // Update particle systems
         rain.Update(data);
 
+        pl0copies.update(data);
+        pl1copies.update(data);
+
         // Rendering
         while (GfxIsBusy())
             ;
@@ -257,14 +261,14 @@ static void GameLoop(const size_t players)
 
         DrawText("HOLI\0", 20, 20, 255, 255, 0);
 
-        pl0copies.update(data);
-        pl1copies.update(data);
-
         // Render players
         pl.render(cam);
 
         // Render particle systems
         rain.Render(cam);
+
+        pl0copies.render(cam);
+        pl1copies.render(cam);
 
         // Last call
         GfxDrawScene();

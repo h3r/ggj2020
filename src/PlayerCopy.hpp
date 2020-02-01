@@ -17,6 +17,6 @@ public:
 private:
     const Player &pl;
     GsSprite spr;
-    unsigned int spawn_timer;
+    unsigned int spawn_timer, prev_spawn_timer;
     bool timer_running;
 };

@@ -78,7 +78,7 @@ BMP2TIM = bmp2tim
 SRC_SPRITES_PATH = $(PROJECT_DIR)/src/sprites
 OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
 SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, test.TIM \
-					anitest.TIM tileset.TIM gatete.TIM font_wh.TIM)
+					tileset.TIM gatete.TIM font_wh.TIM bg1.TIM)
 
 #Level objects:
 SRC_LEVEL_PATH = $(PROJECT_DIR)/src/levels

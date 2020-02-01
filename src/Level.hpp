@@ -20,6 +20,7 @@ public:
 	void Render(const Camera& cam);
 	bool Load(const char* file_name);
 	bool LoadAssets();
+	bool IsTileSolid(short x, short y);
 
 	void GetDimensions(short& w, short& h) const;
 

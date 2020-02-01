@@ -16,7 +16,7 @@ Camera::Camera() :
 void Camera::Default()
 {
     smoothing = true;
-    smooth_value = 0.9;
+    //smooth_value = 0.9;
 
     shake_elapsed = 0;
 	shake_length = 0;
@@ -68,9 +68,9 @@ void Camera::LookAt(const int x, const int y, const Level& level, bool smooth)
     if(x < marginX0 || x > marginX1)
     {
         Y = y;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
-        return;    
+        return;
     }
-    
+
 
 	X = x;//smooth ? lerp(targetx, mPosition.X.value, smooth_value) : targetx;
 	Y = y;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;

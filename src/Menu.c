@@ -56,6 +56,7 @@ static bool MenuInit(void)
 
     if (!init)
     {
+
         init = true;
     }
 
