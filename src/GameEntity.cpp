@@ -5,7 +5,7 @@ GameEntity::GameEntity(const bool active) :
 {
 }
 
-bool GameEntity::isActive()
+bool GameEntity::isActive() const
 {
     return active;
 }

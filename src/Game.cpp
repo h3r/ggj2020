@@ -45,6 +45,8 @@ static Level level;
 
 static GsSprite test_sprite;
 
+#include "AnimatedSprite.hpp"
+
 /* *****************************************************************************
  * Local prototypes declaration
  * ****************************************************************************/
@@ -132,6 +134,11 @@ static void GameInitFiles(void)
     GfxSpriteFromFile("DATA\\SPRITES\\test.TIM", &test_sprite);
 }
 
+static void ani_finished(AnimatedSprite &ani)
+{
+    printf("yo\n");
+}
+
 static void GameLoop(const size_t players)
 {
     Camera cam;
@@ -152,6 +159,32 @@ static void GameLoop(const size_t players)
         // Camera &cam;
         cam
     };
+
+    const animation_config c =
+    {
+        // w
+        48,
+        // h
+        48,
+        // nticks
+        4,
+        // loop
+        false,
+        // start_frame
+        0,
+        // end_frame
+        3,
+        // cb
+        ani_finished
+    };
+
+    GsSprite anitest;
+
+    GfxSpriteFromFile("DATA\\SPRITES\\anitest.TIM", &anitest);
+
+    AnimatedSprite walk_animation(anitest, c);
+
+    walk_animation.SetPos((X_SCREEN_RESOLUTION >> 1) - 64, (Y_SCREEN_RESOLUTION >> 1) - 64);
 
     test_sprite.x = (X_SCREEN_RESOLUTION >> 1) - 32;
     test_sprite.y = (Y_SCREEN_RESOLUTION >> 1) - 32;
@@ -175,6 +208,8 @@ static void GameLoop(const size_t players)
         GfxSortSprite(&test_sprite);
 
         pl.render(cam);
+        walk_animation.Update();
+        walk_animation.Render(cam);
         GfxDrawScene();
     }
 }
