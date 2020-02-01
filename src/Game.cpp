@@ -43,6 +43,11 @@
 
 static Level level;
 
+<<<<<<< HEAD
+=======
+/* static GsSprite test_sprite; */
+
+>>>>>>> e282a5150df4f03bc85d3e067cae8a868015cd00
 #include "AnimatedSprite.hpp"
 
 /* *****************************************************************************
@@ -155,12 +160,16 @@ static void GameLoop(const size_t players)
 
     GlobalData data =
     {
-        // ArrayManager<Player>& Players;
-        pl,
-        // Camera &cam;
-        cam
+        pl, // ArrayManager<Player>& Players;
+        cam // Camera
     };
 
+<<<<<<< HEAD
+=======
+    /* test_sprite.x = (X_SCREEN_RESOLUTION >> 1) - 32;
+    test_sprite.y = (Y_SCREEN_RESOLUTION >> 1) - 32; */
+
+>>>>>>> e282a5150df4f03bc85d3e067cae8a868015cd00
     while (GfxIsBusy())
         ;
 
@@ -168,6 +177,14 @@ static void GameLoop(const size_t players)
     {
         // Game logic
         pl.update(data);
+
+        short x;
+        short y;
+
+        pl.get(0)->getPos(x, y);
+        Vector2 target(x, y);
+
+        cam.Update( target, level );
 
         // Rendering
         while (GfxIsBusy())
@@ -177,6 +194,11 @@ static void GameLoop(const size_t players)
 
         level.Render(cam);
 
+<<<<<<< HEAD
+=======
+        /* GfxSortSprite(&test_sprite); */
+
+>>>>>>> e282a5150df4f03bc85d3e067cae8a868015cd00
         pl.render(cam);
         GfxDrawScene();
     }

@@ -59,7 +59,10 @@ void Camera::Shake(unsigned int amount, unsigned int length)
 
 void Camera::LookAt(const Vector2& target, const Level& level, bool smooth)
 {
-	short mapWidth;
+    (void)level;
+    (void)smooth;
+
+	/* short mapWidth;
     short mapHeight;
 
     level.GetDimensions(mapWidth, mapHeight);
@@ -68,8 +71,8 @@ void Camera::LookAt(const Vector2& target, const Level& level, bool smooth)
     int marginY = Y_SCREEN_RESOLUTION / 2;
 
 	int targetx = clamp(target.X.value, marginX, mapWidth - marginX) - X_SCREEN_RESOLUTION / 2;
-	int targety = clamp(target.Y.value, marginY, mapHeight - marginY) - Y_SCREEN_RESOLUTION / 2;
+	int targety = clamp(target.Y.value, marginY, mapHeight - marginY) - Y_SCREEN_RESOLUTION / 2; */
 
-	mPosition.X = smooth ? lerp(targetx, mPosition.X.value, smooth_value) : targetx;
-	mPosition.Y = smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
+	mPosition.X = target.X;//smooth ? lerp(targetx, mPosition.X.value, smooth_value) : targetx;
+	mPosition.Y = target.Y;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
 }
