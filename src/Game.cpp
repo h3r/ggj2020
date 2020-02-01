@@ -40,7 +40,7 @@
  * Local variables definition
  * ****************************************************************************/
 
-static GsSprite playerSpr, player2Spr, resourceBar;
+static GsSprite playerSpr;
 static GsSprite test_sprite;
 
 /* *****************************************************************************
@@ -124,7 +124,7 @@ static void GameInit(const size_t players)
 
 static void GameInitFiles(void)
 {
-    PlayerInit();
+    Player::Init();
     GfxSpriteFromFile("DATA\\SPRITES\\test.TIM", &test_sprite);
 }
 
@@ -135,8 +135,8 @@ static void GameLoop(const size_t players)
     // Players
     Player player_array[2] =
     {
-        {Player::PLAYER_ONE, players > Player::PLAYER_ONE, playerSpr, resourceBar},
-        {Player::PLAYER_TWO, players > Player::PLAYER_TWO, player2Spr, resourceBar}
+        {Player::PLAYER_ONE, players > Player::PLAYER_ONE},
+        {Player::PLAYER_TWO, players > Player::PLAYER_TWO}
     };
 
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);

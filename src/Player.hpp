@@ -31,17 +31,19 @@ public:
         PLAYER_TWO
     };
 
-    Player(const playern player_n, const bool active, GsSprite &spr, GsSprite &_prRes);
+    Player(const playern player_n, const bool active);
+    
+    static void Init();
+
     void Update(GlobalData &gData);
-    void render(const Camera &camera);
+    void Render(const Camera &camera);
     bool isActive();
 
 private:
     const enum playern mId;
     Pad pad;
     bool active;
-};
 
-void PlayerInit(void);
+};
 
 #endif /* PLAYER_H */

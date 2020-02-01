@@ -47,8 +47,11 @@
  * Functions definition
  * *************************************/
 
-void PlayerInit(void)
+
+// Static method
+void Player::Init()
 {
+    
 }
 
 Player::Player(const playern player_n, const bool active, GsSprite &spr, GsSprite &sprRes) :
@@ -68,6 +71,6 @@ void Player::Update(GlobalData &gData)
     pad.handler();
 }
 
-void Player::render(const Camera &camera)
+void Player::Render(const Camera &camera)
 {
 }

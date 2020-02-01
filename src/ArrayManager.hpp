@@ -102,7 +102,7 @@ public:
 
             if (t.isActive())
             {
-                t.render(cam);
+                t.Render(cam);
             }
         }
     }
