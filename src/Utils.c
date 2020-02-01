@@ -60,7 +60,7 @@ void LoadCharTileSet(void){
 }
 
 //str must be null terminated
-void DrawText(const char *str, unsigned short x, unsigned short y){
+void DrawText(const char *str, unsigned short x, unsigned short y, unsigned char r, unsigned char g, unsigned char b){
     size_t i = 0;
 
     char_tile_set.y = y;
@@ -74,6 +74,9 @@ void DrawText(const char *str, unsigned short x, unsigned short y){
         char_tile_set.x = x + pos * CHAR_WIDTH;
         char_tile_set.u = char_tile_set_zero_u + CHAR_WIDTH*(c % CHARS_PER_ROW);
         char_tile_set.v = char_tile_set_zero_v + CHAR_HEIGHT*(c / CHARS_PER_ROW);
+        char_tile_set.r = r;
+        char_tile_set.g = g;
+        char_tile_set.b = b;
 
         GfxSortSprite(&char_tile_set);
     }

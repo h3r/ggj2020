@@ -255,7 +255,7 @@ static void GameLoop(const size_t players)
         // Render map level
         level.Render(cam);
 
-        DrawText("HOLI\0", 20, 20);
+        DrawText("HOLI\0", 20, 20, 255, 255, 0);
 
         pl0copies.update(data);
         pl1copies.update(data);
