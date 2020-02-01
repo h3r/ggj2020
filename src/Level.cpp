@@ -25,19 +25,26 @@ enum{
 	LEVEL_TILE_EMPTY_2,
 	LEVEL_TILE_EMPTY_3,
 	LEVEL_TILE_GROUND_FILL,
+
 	LEVEL_TILE_GROUND_T,
 	LEVEL_TILE_GROUND_T2,
 	LEVEL_TILE_GROUND_T3,
 	LEVEL_TILE_GROUND_T4,
+
 	LEVEL_TILE_GROUND_TL,
 	LEVEL_TILE_GROUND_TR,
 	LEVEL_TILE_GROUND_BL,
 	LEVEL_TILE_GROUND_BR,
+	
 	LEVEL_TILE_GROUND_B,
 	LEVEL_TILE_GROUND_B2,
 	LEVEL_TILE_GROUND_L,
 	LEVEL_TILE_GROUND_R,
 
+	LEVEL_TILE_GROUND_PO,
+	LEVEL_TILE_GROUND_PU,
+	LEVEL_TILE_GROUND_PI,
+	LEVEL_TILE_GROUND_PA,
 
 	LEVEL_MAX_TILES
 };
@@ -95,25 +102,29 @@ void Level::Render(const Camera& cam){
 bool Level::Load(const char* file_name){
 	/* File size in bytes. Modified by IOLoadFile(). */
     size_t e_size;
-//    size_t level_size;
+	size_t level_size;
 
     /* Get buffer address where file data is contained. */
     const uint8_t *const buffer = IOLoadFile(file_name, &e_size);
 
     if(!buffer || e_size == IO_INVALID_FILE_SIZE)
-    	return false;
+	{
+		return false;
+	}
 
-//    level_size = e_size - 2;
+	level_size = e_size - 2;
 
     width = buffer[0];
     height = buffer[1];
 
     printf("w:%u  h:%u\n", width, height);
 
-//    for (size_t i=0; i<level_size; i++) {
-//    	if(buffer[i+2]<LEVEL_MAX_TILES) return false;
-//    	tiles[i] = buffer[i+2];
-//    }
+    for (size_t i=0; i<level_size; i++) {
+    	if(buffer[i+2] >= LEVEL_MAX_TILES) 
+			return false;
+    	tiles[i] = buffer[i+2];
+		printf("%u", tiles[i]);
+    }
 
     return true;
 }
