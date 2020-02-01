@@ -153,8 +153,8 @@ static void GameLoop(const size_t players)
         {Player::PLAYER_TWO, players > Player::PLAYER_TWO, gatete}
     };
 
-    player_array[0].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 128);
-    player_array[1].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 128);
+    player_array[0].setPos((X_SCREEN_RESOLUTION >> 1) - 64, Y_SCREEN_RESOLUTION - 96);
+    player_array[1].setPos((X_SCREEN_RESOLUTION >> 1) - 64, Y_SCREEN_RESOLUTION - 96);
 
     // Dirty hack, but I want PlayerCopy to inherit from GameEntity!
     PlayerCopy plcopy[2][16] =

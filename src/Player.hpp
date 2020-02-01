@@ -55,7 +55,7 @@ struct sInteraction
     bool active;
     int x;
     int y;
-    int size;   // compute later the box using first 
+    int size;   // compute later the box using first
                 // point and box size
 
 };
@@ -96,7 +96,7 @@ private:
     Pad pad;
     pl_state state, prev_state;
     pl_direction dir;
-    AnimatedSprite running, jumping, idle, rolling, falling;
+    AnimatedSprite running, jumping, idle, rolling, falling, dead;
     unsigned int hp;
     short last_x[LAST_MOVEMENTS_BUF_SIZE], last_y[LAST_MOVEMENTS_BUF_SIZE];
     GsSprite last_sprites[LAST_MOVEMENTS_BUF_SIZE];
@@ -106,6 +106,7 @@ private:
     void UpdatePosition(short &new_x, short &new_y);
     void UpdateCollision(GlobalData &gData, short new_x, short new_y);
     unsigned int GetRecordTime();
+    AnimatedSprite &GetAnimation();
 };
 
 #endif /* PLAYER_H */

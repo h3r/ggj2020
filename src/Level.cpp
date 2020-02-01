@@ -164,6 +164,7 @@ bool Level::IsTileSolid(short x, short y)
 	if (t < LEVEL_MAX_TILES)
 	{
 		printf("t=%d,off=%d,x=%d,y=%d\n", t, offset, x, y);
+		return false;
 		switch (t)
 		{
 			case LEVEL_TILE_EMPTY:
@@ -171,6 +172,8 @@ bool Level::IsTileSolid(short x, short y)
 			case LEVEL_TILE_EMPTY_2:
 				// Fall through.
 			case LEVEL_TILE_EMPTY_3:
+				// Fall through.
+			case LEVEL_TILE_AIR:
 				return false;
 
 			default:

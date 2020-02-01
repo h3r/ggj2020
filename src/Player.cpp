@@ -151,6 +151,7 @@ Player::Player(const playern player_n, const bool active, const GsSprite &base_s
     idle(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 16, true, 5, 7, nullptr}, idle_box, this),
     rolling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, false, 8, 15, rolling_finished}, rolling_box, this),
     falling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, true, 3, 4, nullptr}, nullptr, this),
+    dead(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 1, true, 4, 4, nullptr}, nullptr, this),
     hp(7),
     record_timer(GetRecordTime())
 {
@@ -196,7 +197,6 @@ void Player::UpdateCollision(GlobalData &gData, const short new_x, const short n
     GameEntity* collided_entity = gData.Players.collides(this, new_x, new_y);
 
     if (!collided_entity) {
-
         if (!gData.level.IsTileSolid(new_x, new_y))
         {
             x = new_x;
@@ -269,8 +269,13 @@ void Player::UpdateCollision(GlobalData &gData, const short new_x, const short n
 void Player::UpdatePosition(short &new_x, short &new_y)
 {
     static const short gravity = 2;
+
+    AnimatedSprite &ani = GetAnimation();
+
+    ani.GetPos(new_x, new_y);
+
     new_x = x;
-    new_y = y + gravity;
+    new_y += gravity;
 
     switch (state)
     {
@@ -375,36 +380,39 @@ void Player::Push(int x, int y){
     this->y += y;
 }
 
-void Player::Render(const Camera &camera)
+AnimatedSprite &Player::GetAnimation()
 {
-    AnimatedSprite *ani;
-
     switch (state)
     {
+        case DEAD:
+            return dead;
+
+        case FALLING:
+            return falling;
+
         case IDLE:
-            ani = &idle;
-            break;
+            return idle;
 
         case RUNNING:
-            ani = &running;
-            break;
+            return running;
 
         case ROLLING:
-            ani = &rolling;
-            break;
+            return rolling;
 
         case JUMPING:
-            ani = &jumping;
-            break;
-
-        default:
-            return;
+            return jumping;
     }
+
+    // Unreachable
+    return dead;
+}
+
+void Player::Render(const Camera &camera)
+{
+    AnimatedSprite &ani = GetAnimation();
 
     if (state != prev_state)
-    {
-        ani->Repeat();
-    }
+        ani.Repeat();
 
     if (record_timer)
         record_timer--;
@@ -412,7 +420,7 @@ void Player::Render(const Camera &camera)
     {
         const size_t i = rand_min_max(0, LAST_MOVEMENTS_BUF_SIZE - 1);
 
-        last_sprites[i] = ani->getSprite();
+        last_sprites[i] = ani.getSprite();
         last_x[i] = x;
         last_y[i] = y;
 
@@ -423,17 +431,17 @@ void Player::Render(const Camera &camera)
     switch (dir)
     {
         case LEFT:
-            ani->SetSprAttribute(ani->GetSprAttribute() | H_FLIP);
+            ani.SetSprAttribute(ani.GetSprAttribute() | H_FLIP);
             break;
 
         case RIGHT:
-            ani->SetSprAttribute(ani->GetSprAttribute() & ~H_FLIP);
+            ani.SetSprAttribute(ani.GetSprAttribute() & ~H_FLIP);
             break;
     }
 
-    ani->SetPos(x, y);
-    ani->Render(camera);
-    ani->getDimensions(w, h);
+    ani.SetPos(x, y);
+    ani.Render(camera);
+    ani.getDimensions(w, h);
     prev_state = state;
 }
 

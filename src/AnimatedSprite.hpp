@@ -30,6 +30,7 @@ public:
     AnimatedSprite(const GsSprite &base_spr, const animation_config &c, const box *b, void *args) __attribute__((nonnull(1)));
     void Render(const Camera &cam);
     void SetPos(short x, short y);
+    void GetPos(short &x, short &y);
     void getDimensions(short &w, short &h) const;
     void Repeat();
     unsigned char GetSprAttribute();
