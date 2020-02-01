@@ -1,6 +1,6 @@
 
 #include "ParticleSystem.hpp"
-#include "Utils.hpp"
+#include "Utils.h"
 #include "Gfx.h"
 #include "stdlib.h"
 
