@@ -40,6 +40,10 @@ enum{
 	LEVEL_TILE_GROUND_B2,
 	LEVEL_TILE_GROUND_L,
 	LEVEL_TILE_GROUND_R,
+	LEVEL_TILE_16,
+	LEVEL_TILE_17,
+	LEVEL_TILE_18,
+	LEVEL_TILE_19,
 
 	LEVEL_TILE_GROUND_PO,
 	LEVEL_TILE_GROUND_PU,
@@ -74,7 +78,7 @@ enum{
 /* *************************************
  * Functions definition
  * *************************************/
-Level::Level() : width(0), height(0){
+Level::Level() : level_loaded(false), width(0), height(0){
 }
 
 void Level::Update(GlobalData& data){
@@ -82,6 +86,8 @@ void Level::Update(GlobalData& data){
 }
 
 void Level::Render(const Camera& cam){
+	if(!level_loaded) return;
+
 	for(size_t i=0; i<width; i++){
 		for(size_t j=0; j<height; j++){
 			tile_set.x = i * TILE_SIZE;
@@ -100,34 +106,31 @@ void Level::Render(const Camera& cam){
 #include <stdio.h>
 
 bool Level::Load(const char* file_name){
+	level_loaded = false;
+
 	/* File size in bytes. Modified by IOLoadFile(). */
     size_t e_size;
-	size_t level_size;
 
     /* Get buffer address where file data is contained. */
     const uint8_t *const buffer = IOLoadFile(file_name, &e_size);
 
     if(!buffer || e_size == IO_INVALID_FILE_SIZE)
-	{
-		return false;
-	}
-
-	level_size = e_size - 2;
+    	return false;
 
     width = buffer[0];
     height = buffer[1];
 
-    printf("w:%u  h:%u\n", width, height);
+    if(width > MAX_LEVEL_SIZE_WIDTH || height > MAX_LEVEL_SIZE_HEIGHT)
+    	return false;
 
-    for (size_t i=0; i<level_size; i++) {
+    for (size_t i=0; i<e_size-2; i++) {
     	if(buffer[i+2] >= LEVEL_MAX_TILES)
-			return false;
-    	tiles[i] = buffer[i+2];
-		printf("%u", tiles[i]);
+			tiles[i] = 0;
+    	else
+    		tiles[i] = buffer[i+2];
     }
 
-	printf("\n");
-
+    level_loaded = true;
     return true;
 }
 
@@ -141,70 +144,6 @@ bool Level::LoadAssets(){
 	tile_set_width_tiles = tile_set_total_width / TILE_SIZE;
 	tile_set.w = tile_set.h = TILE_SIZE;
 	return ret;
-}
-
-void Level::TestLevel(){
-/*
-32 8
-................................
-.........___....................
-...___..................________
-...._...._____............._____
-................____..........._
-.....__________........_________
-.....................___________
-________________________________
-*/
-
-	width = 32;
-	height = 8;
-
-	for(size_t i=0; i<width; i++){
-		for(size_t j=0; j<height; j++){
-			if(j == (unsigned short)(height-1)) tiles[i+j*width] = LEVEL_TILE_GROUND_T;
-			else tiles[i+j*width] = LEVEL_TILE_EMPTY;
-		}
-	}
-
-	for(size_t i=0; i<3; i++){
-		tiles[9+i+width] = LEVEL_TILE_GROUND_T;
-	}
-
-	for(size_t i=0; i<3; i++){
-		tiles[3+i+2*width] = LEVEL_TILE_GROUND_T;
-	}
-
-	for(size_t i=0; i<8; i++){
-		tiles[24+i+2*width] = LEVEL_TILE_GROUND_T;
-	}
-
-	tiles[4+3*width] = LEVEL_TILE_GROUND_T;
-
-	for(size_t i=0; i<5; i++){
-		tiles[9+i+3*width] = LEVEL_TILE_GROUND_T;
-	}
-
-	for(size_t i=0; i<5; i++){
-		tiles[27+i+3*width] = LEVEL_TILE_GROUND_T;
-	}
-
-	for(size_t i=0; i<4; i++){
-		tiles[16+i+4*width] = LEVEL_TILE_GROUND_T;
-	}
-
-	tiles[31+4*width] = LEVEL_TILE_GROUND_T;
-
-	for(size_t i=0; i<10; i++){
-		tiles[5+i+5*width] = LEVEL_TILE_GROUND_T;
-	}
-
-	for(size_t i=0; i<9; i++){
-		tiles[23+i+5*width] = LEVEL_TILE_GROUND_T;
-	}
-
-	for(size_t i=0; i<11; i++){
-		tiles[21+i+6*width] = LEVEL_TILE_GROUND_T;
-	}
 }
 
 void Level::GetDimensions(short& w, short& h) const{
