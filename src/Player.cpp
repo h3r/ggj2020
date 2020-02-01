@@ -99,17 +99,20 @@ Player::Player(const playern player_n, const bool active, const GsSprite &base_s
     state(IDLE),
     prev_state(state),
     dir(RIGHT),
-    running(base_spr, animation_config{64, 64, 4, true, 16, 21, nullptr}, this),
-    jumping(base_spr, animation_config{64, 64, 4, false, 0, 4, jumping_finished}, this),
-    idle(base_spr, animation_config{64, 64, 8, true, 5, 7, nullptr}, this),
-    rolling(base_spr, animation_config{64, 64, 4, false, 8, 15, rolling_finished}, this)
+    running(base_spr, animation_config{64, 64, 4, true, false, 16, 21, nullptr}, this),
+    jumping(base_spr, animation_config{64, 64, 4, false, false, 0, 4, jumping_finished}, this),
+    idle(base_spr, animation_config{64, 64, 8, true, true, 5, 7, nullptr}, this),
+    rolling(base_spr, animation_config{64, 64, 4, false, false, 8, 15, rolling_finished}, this),
+    falling(base_spr, animation_config{64, 64, 4, true, false, 3, 4, nullptr}, this)
 {
 }
 
 void Player::Update(GlobalData &gData)
 {
-    (void)gData;
+    const short gravity = 2;
 
+    short new_x = x;
+    short new_y = y + gravity;
     pad.handler();
 
     switch (state)
@@ -125,17 +128,13 @@ void Player::Update(GlobalData &gData)
                 state = ROLLING;
             else if (pad.keyPressed(Pad::LEFT))
             {
-                short x, y;
-                getPos(x, y);
-                setPos(x - RUNNING_SPEED, y);
+                new_x -= RUNNING_SPEED;
                 state = RUNNING;
                 dir = LEFT;
             }
             else if (pad.keyPressed(Pad::RIGHT))
             {
-                short x, y;
-                getPos(x, y);
-                setPos(x + RUNNING_SPEED, y);
+                new_x += RUNNING_SPEED;
                 state = RUNNING;
                 dir = RIGHT;
             }
@@ -144,25 +143,24 @@ void Player::Update(GlobalData &gData)
 
         case JUMPING:
         {
-            short x, y;
             const short speed = dir == RIGHT ? JUMP_SPEED : -JUMP_SPEED;
-            getPos(x, y);
-            setPos(x + speed, y);
+            new_x += speed;
         }
             break;
 
         case ROLLING:
         {
-            short x, y;
             const short speed = dir == RIGHT ? ROLLING_SPEED : -ROLLING_SPEED;
-            getPos(x, y);
-            setPos(x + speed, y);
+            new_x += speed;
         }
             break;
 
         default:
             break;
     }
+
+    if (!gData.Players.collides(this, new_x, new_y))
+        x = new_x;
 }
 
 void Player::Render(const Camera &camera)

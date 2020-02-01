@@ -250,12 +250,16 @@ static const uint8_t *IOLoadFileFromSerial(char* const buffer, size_t* const fil
             SerialWrite(ACK_BYTE_STRING, sizeof (uint8_t)); // Write ACK
         }
 
+        *fileSize = receivedSize;
+
         return fileBuffer;
     }
     else
     {
         printf("Input file %s cannot be stored into internal buffer\n", buffer);
     }
+
+    *fileSize = 0;
 
     return NULL;
 }
