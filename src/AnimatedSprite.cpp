@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *const args) :
+AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config &c, const box *const b, void *const args) :
     c(c),
     spr(base_spr),
     // Remember original width/height and texture page.
@@ -29,7 +29,8 @@ AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config 
     ticks_c(0),
     frames_c(0),
     finished(false),
-    args(args)
+    args(args),
+    b(b)
 {
     // Sprite is already assumed to be loaded.
     if (!base_spr.w || !base_spr.h || !base_spr.tpage)
@@ -62,11 +63,12 @@ void AnimatedSprite::PreRender()
 
             if (++frames_c >= n_frames)
             {
+                frames_c = 0;
+
                 if (c.loop)
                 {
                     spr.u = start_u;
                     spr.v = start_v;
-                    frames_c = 0;
                     spr.tpage = start_tpage;
                 }
                 else if (c.cb)
@@ -121,6 +123,31 @@ void AnimatedSprite::Render(const Camera &cam)
     cam.getPosition(spr.x,spr.y);
 
     GfxSortSprite(&spr);
+}
+
+void AnimatedSprite::getBox(box &b, const bool mirror)
+{
+    if (this->b)
+    {
+        const size_t i = frames_c;
+
+        if (mirror)
+        {
+            const short mirror_x = spr.w - this->b[i].w - this->b[i].x;
+
+            const box ab =
+            {
+                mirror_x,
+                this->b[i].y,
+                this->b[i].w,
+                this->b[i].h
+            };
+
+            b = ab;
+        }
+        else
+            b = this->b[i];
+    }
 }
 
 void AnimatedSprite::SetPos(const short x, const short y)

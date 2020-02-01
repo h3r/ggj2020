@@ -19,13 +19,19 @@ struct animation_config
     animation_end_cb cb;
 };
 
+struct box
+{
+    short x, y, w, h;
+};
+
 class AnimatedSprite
 {
 public:
-    AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *args);
+    AnimatedSprite(const GsSprite &base_spr, const animation_config &c, const box *b, void *args) __attribute__((nonnull(1)));
     void Render(const Camera &cam);
     void SetPos(short x, short y);
     void Repeat();
+    void getBox(box &h, bool mirror);
     unsigned char GetSprAttribute();
     void SetSprAttribute(unsigned char attr);
 
@@ -41,6 +47,7 @@ private:
     uint8_t frames_c;
     bool finished;
     void *const args;
+    const box *const b;
 
     void PreRender();
 };

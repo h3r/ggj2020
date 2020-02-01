@@ -60,6 +60,8 @@ public:
 
     void Update(GlobalData &gData) override;
     void Render(const Camera &camera) override;
+    void getPos(short &x, short &y) const override;
+
     void SetState(pl_state state);
     void Hit(unsigned int hp_loss);
     void Push(int x, int y);
@@ -76,6 +78,7 @@ private:
     unsigned int hp;
     short last_x[LAST_MOVEMENTS_BUF_SIZE], last_y[LAST_MOVEMENTS_BUF_SIZE];
     GsSprite last_sprites[LAST_MOVEMENTS_BUF_SIZE];
+    box b;
 };
 
 #endif /* PLAYER_H */
