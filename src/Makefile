@@ -18,7 +18,7 @@ DEFINE = -DFIXMATH_FAST_SIN -DVIDEO_MODE=VMODE_PAL
 
 # Compiler flags
 LIBS= -lfixmath -lm
-CC_FLAGS = -Wall -c -O0 -ffunction-sections -fdata-sections -Wfatal-errors -Werror -flto
+CC_FLAGS = -Wall -c -Os -ffunction-sections -fdata-sections -Wfatal-errors -Werror -flto
 CXX_FLAGS = $(CC_FLAGS) -std=c++17
 
 # Path definitions
@@ -52,9 +52,9 @@ SRC_DIR = .
 OBJECTS = $(addprefix $(OBJ_DIR)/,	\
 			main.o Sfx.o Gfx.o Interrupts.o IO.o SystemInit.o	\
 			Menu.o Game.o FileData.o Player.o Timers.o	\
-			Pad.o Serial.o Camera.o  \
+			Pad.o Serial.o Camera.o Level.o \
 			Player.o Vector2.o ArrayManager.o \
-			MultiSpriteEntity.o  )
+			MultiSpriteEntity.o AnimatedSprite.o GameEntity.o)
 
 # Source dependencies:
 DEPS = $(OBJECTS:.o=.d)

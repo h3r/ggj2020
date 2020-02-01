@@ -14,7 +14,7 @@
 
 #include "Pad.hpp"
 #include "Player.hpp"
-#include "GlobalData.h"
+#include "GlobalData.hpp"
 #include "Serial.h"
 #include "Gfx.h"
 #include "Sfx.h"
@@ -51,19 +51,14 @@
 // Static method
 void Player::Init()
 {
-    
+
 }
 
-Player::Player(const playern player_n, const bool active, GsSprite &spr, GsSprite &sprRes) :
+Player::Player(const playern player_n, const bool active) :
+    GameEntity(active),
     mId(player_n),
-    pad(player_n),
-    active(active)
+    pad(player_n)
 {
-}
-
-bool Player::isActive()
-{
-    return active;
 }
 
 void Player::Update(GlobalData &gData)

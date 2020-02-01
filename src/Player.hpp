@@ -18,11 +18,12 @@
 #include "Pad.hpp"
 #include "Gfx.h"
 #include "ArrayManager.hpp"
-#include "GlobalData.h"
+#include "GameEntity.hpp"
+#include "GlobalData.hpp"
 #include <stddef.h>
 #include <stdbool.h>
 
-class Player
+class Player : public GameEntity
 {
 public:
     enum playern
@@ -32,18 +33,15 @@ public:
     };
 
     Player(const playern player_n, const bool active);
-    
+
     static void Init();
 
-    void Update(GlobalData &gData);
-    void Render(const Camera &camera);
-    bool isActive();
+    void Update(GlobalData &gData) override;
+    void Render(const Camera &camera) override;
 
 private:
     const enum playern mId;
     Pad pad;
-    bool active;
-
 };
 
 #endif /* PLAYER_H */
