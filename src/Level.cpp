@@ -93,7 +93,8 @@ bool Level::Load(const char* file_name){
 }
 
 bool Level::LoadAssets(){
-	return GfxSpriteFromFile("DATA\\SPRITES\\tileset.TIM", &tile_set);
+
+	bool ret = GfxSpriteFromFile("DATA\\SPRITES\\tileset.TIM", &tile_set);
 	tile_set_total_width = tile_set.w;
 	tile_set_total_height = tile_set.h;
 	tile_set_zero_u = tile_set.u;
@@ -102,6 +103,7 @@ bool Level::LoadAssets(){
 //	tile_set_width_tiles = tile_set_width / TILE_SIZE;
 //	tile_set_height_tiles = tile_set_height / TILE_SIZE;
 //	tile_set.w = tile_set.h = TILE_SIZE;
+	return ret;
 }
 
 void Level::TestLevel(){
