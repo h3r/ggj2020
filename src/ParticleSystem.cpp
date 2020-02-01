@@ -1,18 +1,60 @@
 
 #include "ParticleSystem.hpp"
+#include "Utils.hpp"
+#include "Gfx.h"
+#include "stdlib.h"
+
+ParticleSystem::ParticleSystem()
+{
+
+}
 
 RainSystem::RainSystem()
 {
+    Init();
+}
+
+void RainSystem::Init()
+{
     for (int i = 0; i < N_PARTICLES; i++)
     {
-        particles[i] = sParticle();
+        sParticle p = sParticle();
+        p.X = rand() * X_SCREEN_RESOLUTION + 1;
+        p.Y = rand() * Y_SCREEN_RESOLUTION + 1;
+        p.accX = 1;
+        p.accY = 3;
+        p.speed = 2;
+        p.lifespan = 100;
+        p.ttl = 0;
+
+        particles[i] = p;
     }
-    
 }
 
 void RainSystem::Render(const Camera &cam)
 {
     (void)cam;
+
+    for (int i = 0; i < N_PARTICLES; i++)
+    {
+        sParticle p = particles[i];
+        
+        short x = p.X;
+        short y = p.Y;
+
+        cam.getPosition(x, y);
+
+        vec2 begin = vec2();
+        begin.x = x;
+        begin.y = y;
+
+        vec2 end = vec2();
+        end.x = begin.x + 2; 
+        end.y = begin.y + 5;
+
+        GsLine line = CreateLine(begin, end, 180, 200, 245, true);
+        (void)line;
+    }
 }
 
 void RainSystem::Update(GlobalData &gData)
@@ -23,12 +65,20 @@ void RainSystem::Update(GlobalData &gData)
     {
         sParticle * p = &particles[i];
 
-        p->X += 1;
-		p->Y += 2;
-		p->ttl++; // increase lifetime
+        // Use acceleration and speed here
+        p->X += p->accX * p->speed;
+		p->Y += p->accY * p->speed;
+		p->ttl++;
 
 		// Reset position once they reach the limit
         // TO DO
+        if(p->ttl > p->lifespan)
+        {
+            p->X = rand() * X_SCREEN_RESOLUTION + 1;
+            p->Y = rand() * Y_SCREEN_RESOLUTION + 1;
+            p->ttl = 0;
+        }
+            
 
     }
 }

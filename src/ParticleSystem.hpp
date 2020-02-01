@@ -3,7 +3,7 @@
 #include "GlobalData.hpp"
 #include "Camera.hpp"
 
-#define N_PARTICLES 100
+#define N_PARTICLES 300
 
 struct sParticle{
 
@@ -24,6 +24,7 @@ public:
     
     ParticleSystem();
 
+    virtual void Init() = 0;
     virtual void Render(const Camera &cam) = 0;
     virtual void Update(GlobalData &gData) = 0;
 
@@ -37,6 +38,7 @@ public:
     
     RainSystem();
 
+    void Init();
     void Render(const Camera &cam);
     void Update(GlobalData &gData);
 
