@@ -1,5 +1,6 @@
 #include "Camera.hpp"
 #include "Math.hpp"
+#include "Level.hpp"
 #include "Gfx.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -58,10 +59,10 @@ void Camera::Shake(unsigned int amount, unsigned int length)
 
 void Camera::LookAt(const Vector2& target, const Level& level, bool smooth)
 {
-	short mapWidth = 0;
-    short mapHeight = 0;
+	short mapWidth;
+    short mapHeight;
 
-    //level.GetDimensions(&mapWidth, &mapHeight);
+    level.GetDimensions(mapWidth, mapHeight);
 
 	int marginX = X_SCREEN_RESOLUTION / 2;
     int marginY = Y_SCREEN_RESOLUTION / 2;
