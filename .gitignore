@@ -60,3 +60,6 @@ dkms.conf
 exe/
 obj/
 src/cdimg
+
+# Fucking MAC info files
+.DS_Store
