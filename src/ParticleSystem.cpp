@@ -34,6 +34,8 @@ void RainSystem::Init()
 void RainSystem::Render(const Camera &cam)
 {
     (void)cam;
+    static int count = 0;
+    count++;
 
     for (int i = 0; i < N_PARTICLES; i++)
     {
@@ -43,6 +45,8 @@ void RainSystem::Render(const Camera &cam)
         short y = p.Y;
 
         cam.getPosition(x, y);
+
+        x = (x + count) % X_SCREEN_RESOLUTION; 
 
         vec2 begin = vec2();
         begin.x = x;

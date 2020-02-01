@@ -41,7 +41,7 @@ void Camera::Update(const int x, const int y, const Level& level)
         X += shakeX;
 		Y += shakeY;
 
-		//shake_length--;
+		shake_length--;
 	}
 }
 

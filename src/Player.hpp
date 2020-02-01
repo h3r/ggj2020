@@ -35,14 +35,33 @@ enum pl_state
     DEAD,
 };
 
+enum interactions
+{
+    TIME_FRAG,
+    COPY,
+
+    MAX_INTERACTIONS
+};
+
 enum pl_direction
 {
     LEFT,
     RIGHT
 };
 
-#define PLAYER_SZ ((short)64)
-#define LAST_MOVEMENTS_BUF_SIZE 16
+struct sInteraction
+{
+    unsigned int uid;
+    bool active;
+    int x;
+    int y;
+    int size;   // compute later the box using first 
+                // point and box size
+
+};
+
+#define PLAYER_SZ                   ((short)64)
+#define LAST_MOVEMENTS_BUF_SIZE     16
 
 class Player : public GameEntity
 {
@@ -57,11 +76,14 @@ public:
     Player(const playern player_n, const bool active, const GsSprite &base_spr);
 
     static void Init(GsSprite *spr);
+    static sInteraction enabled_interactions[MAX_INTERACTIONS];
 
     void Update(GlobalData &gData) override;
     void Render(const Camera &camera) override;
     void getPos(short &x, short &y) const override;
     enum playern getId() const;
+
+    void CheckInteractions(GlobalData &gData);
 
     void SetState(pl_state state);
     void Hit(unsigned int hp_loss);

@@ -42,6 +42,8 @@
  * Global variables definition
  * *************************************/
 
+sInteraction Player::enabled_interactions[MAX_INTERACTIONS];
+
 /* *************************************
  * Local variables definition
  * *************************************/
@@ -146,6 +148,17 @@ Player::Player(const playern player_n, const bool active, const GsSprite &base_s
     falling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, true, 3, 4, nullptr}, nullptr, this),
     hp(7)
 {
+    // Fill interactions list
+    for (unsigned int i = 0; i < MAX_INTERACTIONS; i++)
+    {
+        sInteraction * it = &enabled_interactions[i];
+
+        it->uid = i;
+        it->x = X_SCREEN_RESOLUTION - 50;
+        it->y = Y_SCREEN_RESOLUTION - 32;
+        it->size = 32;
+        it->active = false;
+    }
 }
 
 void Player::Update(GlobalData &gData)
@@ -263,6 +276,52 @@ void Player::Update(GlobalData &gData)
 
     }
 
+    // Check interactions now
+    CheckInteractions(gData);
+
+}
+
+void Player::CheckInteractions(GlobalData &gData)
+{
+    for (int i = 0; i < MAX_INTERACTIONS; i++)
+    {
+        sInteraction* it = &enabled_interactions[i];
+
+        switch (dir)
+        {
+        case RIGHT:
+            if((x + 64) < it->x)
+            {
+                it->active = false;    
+            }
+            else if(x > (it->x + it->size))
+            {
+                it->active = false;    
+            }
+            else
+            {
+                it->active = true;
+                gData.camera.Shake(3, 3);
+            }
+            continue;
+        case LEFT:
+            if(x > (it->x + it->size))
+            {
+                it->active = false;
+            }  
+            else if((x + 64) < it->x)
+            {
+                it->active = false;
+            }  
+            else
+            {
+                it->active = true;
+                gData.camera.Shake(3, 3);
+            }
+            continue;
+        }
+    }
+    
 }
 
 enum Player::playern Player::getId() const
