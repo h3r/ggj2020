@@ -1,27 +1,41 @@
 #pragma once
 
 #include "Gfx.h"
+#include "Camera.hpp"
 #include <psxgpu.h>
 #include <stdint.h>
 #include <stdbool.h>
 
-struct animation_coords
+class AnimatedSprite;
+
+typedef void (*animation_end_cb)(AnimatedSprite &ani);
+
+struct animation_config
 {
     short w, h;
     uint32_t nticks;
     bool loop;
+    uint8_t start_frame, end_frame;
+    animation_end_cb cb;
 };
 
 class AnimatedSprite
 {
 public:
-    AnimatedSprite(const char *fileName, const GsSprite &base_spr, const animation_coords &c);
-    void update();
+    AnimatedSprite(const GsSprite &base_spr, const animation_config &c);
+    void Update();
+    void Render(const Camera &cam);
+    void SetPos(short x, short y);
+    void Repeat();
 
 private:
+    const animation_config c;
+    const short base_w;
     GsSprite spr;
-    const animation_coords c;
-    uint32_t counter;
-    short orig_w, orig_h;
-    short x_offset, y_offset;
+    const uint8_t n_frames;
+    const short start_u, start_v;
+    short x, y;
+    uint16_t ticks_c;
+    uint8_t frames_c;
+    bool finished;
 };

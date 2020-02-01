@@ -77,7 +77,8 @@ SOUND_OBJECTS = $(addprefix $(OBJ_SOUNDS_DIR)/,	)
 BMP2TIM = bmp2tim
 SRC_SPRITES_PATH = $(PROJECT_DIR)/src/sprites
 OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
-SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, test.TIM)
+SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, test.TIM anitest.TIM tileset.TIM)
+
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.

@@ -8,9 +8,11 @@ class GlobalData;
 class Camera;
 
 enum{
-	MAX_LEVEL_SIZE_X = 32,
-	MAX_LEVEL_SIZE_Y = 16,
-	TILE_SIZE = 16
+	MAX_LEVEL_SIZE_WIDTH = 32,
+	MAX_LEVEL_SIZE_HEIGHT = 16,
+	TILE_SIZE = 16,
+	TILE_SET_WIDTH = 2,
+	TILE_SET_HEIGHT = 2
 };
 
 class Level{
@@ -27,7 +29,7 @@ public:
 private:
 	uint8_t width;
 	uint8_t height;
-	uint8_t tiles[MAX_LEVEL_SIZE_X*MAX_LEVEL_SIZE_Y];
+	uint8_t tiles[MAX_LEVEL_SIZE_WIDTH*MAX_LEVEL_SIZE_HEIGHT];
 
 	GsSprite tile_set;
 };
