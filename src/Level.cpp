@@ -61,9 +61,9 @@ void Level::Render(const Camera& cam){
 			tile_set.y = j * TILE_SIZE;
 			cam.getPosition(tile_set.x, tile_set.y);
 
-			//const uint8_t tile = tiles[i + j*tile_set_width_tiles];
-			tile_set.u = tile_set_zero_u + 16;//(TILE_SIZE*tile)%tile_set_total_width;
-			tile_set.v = tile_set_zero_v + 16;//(TILE_SIZE*tile)/tile_set_total_width;
+			const uint8_t tile = tiles[i + j*tile_set_width_tiles];
+			tile_set.u = tile_set_zero_u + (TILE_SIZE*tile)%tile_set_total_width;
+			tile_set.v = tile_set_zero_v + (TILE_SIZE*tile)/tile_set_total_width;
 
 			GfxSortSprite(&tile_set);
 		}
@@ -93,16 +93,15 @@ bool Level::Load(const char* file_name){
 }
 
 bool Level::LoadAssets(){
-
 	bool ret = GfxSpriteFromFile("DATA\\SPRITES\\tileset.TIM", &tile_set);
 	tile_set_total_width = tile_set.w;
 	tile_set_total_height = tile_set.h;
 	tile_set_zero_u = tile_set.u;
 	tile_set_zero_v = tile_set.v;
 
-//	tile_set_width_tiles = tile_set_width / TILE_SIZE;
-//	tile_set_height_tiles = tile_set_height / TILE_SIZE;
-//	tile_set.w = tile_set.h = TILE_SIZE;
+	tile_set_width_tiles = tile_set_total_width / TILE_SIZE;
+//	tile_set_height_tiles = tile_set_total_height / TILE_SIZE;
+	tile_set.w = tile_set.h = TILE_SIZE;
 	return ret;
 }
 
@@ -111,7 +110,13 @@ void Level::TestLevel(){
 	height = MAX_LEVEL_SIZE_HEIGHT;
 	size = width * height;
 	for(size_t i=0; i<size; i++){
-		tiles[i] = i%2;
+		size_t x = i % width;
+		size_t y = i / height;
+
+		if(y < x*x)
+			tiles[i] = LEVEL_TILE_GROUND;
+		else
+			tiles[i] = LEVEL_TILE_EMPTY;
 	}
 }
 
