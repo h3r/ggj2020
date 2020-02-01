@@ -1,7 +1,7 @@
 #include "PlayerCopy.hpp"
 #include "GameEntity.hpp"
 #include "Player.hpp"
-#include "Utils.hpp"
+#include "Utils.h"
 #include <stdlib.h>
 #include <stddef.h>
 
@@ -37,9 +37,10 @@ void PlayerCopy::Trigger(GlobalData &gData)
 
         if (last_x_buf && last_y_buf && spr_buf)
         {
-            const short x = last_x_buf[rand() % LAST_MOVEMENTS_BUF_SIZE];
-            const short y = last_y_buf[rand() % LAST_MOVEMENTS_BUF_SIZE];
-            spr = spr_buf[rand() % LAST_MOVEMENTS_BUF_SIZE];
+            const size_t i = rand() % LAST_MOVEMENTS_BUF_SIZE;
+            const short x = last_x_buf[i];
+            const short y = last_y_buf[i];
+            spr = spr_buf[i];
 
             setPos(x, y);
         }
@@ -50,17 +51,13 @@ void PlayerCopy::Trigger(GlobalData &gData)
 
 void PlayerCopy::UpdateInactive(GlobalData &gData)
 {
-    (void)gData;
-
     if (timer_running && pl.isActive())
     {
         if (spawn_timer)
             spawn_timer--;
         else if (!active)
-        {
             // Create copy!
             Trigger(gData);
-        }
     }
 }
 

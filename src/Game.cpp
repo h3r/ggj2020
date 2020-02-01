@@ -213,7 +213,8 @@ static void GameLoop(const size_t players)
         {
             pl0copies,
             pl1copies
-        }
+        },
+        level
     };
 
     RainSystem rain;

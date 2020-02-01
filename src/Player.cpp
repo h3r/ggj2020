@@ -16,6 +16,7 @@
 #include "Player.hpp"
 #include "GlobalData.hpp"
 #include "AnimatedSprite.hpp"
+#include "Level.hpp"
 #include "Serial.h"
 #include "Gfx.h"
 #include "Sfx.h"
@@ -24,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "Vector2.hpp"
+#include "Utils.h"
 
 
 /* *************************************
@@ -33,6 +35,9 @@
 #define RUNNING_SPEED ((short)4)
 #define JUMP_SPEED ((short)5)
 #define ROLLING_SPEED ((short)3)
+
+#define MIN_RECORD_TIME ((unsigned int)100)
+#define MAX_RECORD_TIME ((unsigned int)500)
 
 /* *************************************
  * Types definition
@@ -144,64 +149,30 @@ Player::Player(const playern player_n, const bool active, const GsSprite &base_s
     idle(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 16, true, 5, 7, nullptr}, idle_box, this),
     rolling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, false, 8, 15, rolling_finished}, rolling_box, this),
     falling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, true, 3, 4, nullptr}, nullptr, this),
-    hp(7)
+    hp(7),
+    record_timer(GetRecordTime())
 {
 }
 
-void Player::Update(GlobalData &gData)
+unsigned int Player::GetRecordTime()
 {
-    const short gravity = 2;
+    return rand_min_max(MIN_RECORD_TIME, MAX_RECORD_TIME);
+}
 
-    short new_x = x;
-    short new_y = y + gravity;
-    pad.handler();
+void Player::UpdateCollision(GlobalData &gData, const short new_x, const short new_y)
+{
+    short level_w, level_h;
+    const short exc = PLAYER_SZ >> 1;
 
-    switch (state)
-    {
-        case RUNNING:
-            if (pad.released(Pad::LEFT) || pad.released(Pad::RIGHT))
-                state = IDLE;
-            // Fall through.
-        case IDLE:
-            if (pad.singlePress(Pad::CROSS))
-                state = JUMPING;
-            else if (pad.singlePress(Pad::CIRCLE))
-                state = ROLLING;
-            else if (pad.keyPressed(Pad::LEFT))
-            {
-                new_x -= RUNNING_SPEED;
-                state = RUNNING;
-                dir = LEFT;
-            }
-            else if (pad.keyPressed(Pad::RIGHT))
-            {
-                new_x += RUNNING_SPEED;
-                state = RUNNING;
-                dir = RIGHT;
-            }
+    gData.level.GetDimensions(level_w, level_h);
 
-            break;
-
-        case JUMPING:
-        {
-            const short speed = dir == RIGHT ? JUMP_SPEED : -JUMP_SPEED;
-            new_x += speed;
-        }
-            break;
-
-        case ROLLING:
-        {
-            const short speed = dir == RIGHT ? ROLLING_SPEED : -ROLLING_SPEED;
-            new_x += speed;
-        }
-            break;
-
-        default:
-            break;
-    }
+    if ((new_x - exc) < 0 || (new_y - exc) < 0)
+        return;
+    else if ((new_x + (exc << 1)) > level_w || (new_y + exc) > level_h)
+        return;
 
     GameEntity* collided_entity = gData.Players.collides(this, new_x, new_y);
-    if (!collided_entity){
+    if (!collided_entity) {
         x = new_x;
     }
     else
@@ -262,7 +233,61 @@ void Player::Update(GlobalData &gData)
         }
 
     }
+}
 
+void Player::Update(GlobalData &gData)
+{
+    const short gravity = 2;
+
+    short new_x = x;
+    short new_y = y + gravity;
+    pad.handler();
+
+    switch (state)
+    {
+        case RUNNING:
+            if (pad.released(Pad::LEFT) || pad.released(Pad::RIGHT))
+                state = IDLE;
+            // Fall through.
+        case IDLE:
+            if (pad.singlePress(Pad::CROSS))
+                state = JUMPING;
+            else if (pad.singlePress(Pad::CIRCLE))
+                state = ROLLING;
+            else if (pad.keyPressed(Pad::LEFT))
+            {
+                new_x -= RUNNING_SPEED;
+                state = RUNNING;
+                dir = LEFT;
+            }
+            else if (pad.keyPressed(Pad::RIGHT))
+            {
+                new_x += RUNNING_SPEED;
+                state = RUNNING;
+                dir = RIGHT;
+            }
+
+            break;
+
+        case JUMPING:
+        {
+            const short speed = dir == RIGHT ? JUMP_SPEED : -JUMP_SPEED;
+            new_x += speed;
+        }
+            break;
+
+        case ROLLING:
+        {
+            const short speed = dir == RIGHT ? ROLLING_SPEED : -ROLLING_SPEED;
+            new_x += speed;
+        }
+            break;
+
+        default:
+            break;
+    }
+
+    UpdateCollision(gData, new_x, new_y);
 }
 
 enum Player::playern Player::getId() const
