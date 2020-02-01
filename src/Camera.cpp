@@ -57,20 +57,21 @@ void Camera::LookAt(const int x, const int y, const Level& level, bool smooth)
     (void)level;
     (void)smooth;
 
-    int Tx = x;
-    int Ty = y;
+	short mapWidth;
+    short mapHeight;
 
-	/* short mapWidth;
-    short mapHeight; */
+    level.GetDimensions(mapWidth, mapHeight);
 
-    //level.GetDimensions(mapWidth, mapHeight);
+	int marginX0 = X_SCREEN_RESOLUTION >> 1;
+    int marginX1 = mapWidth - (X_SCREEN_RESOLUTION >> 1) - 32;
 
-	//int marginX = X_SCREEN_RESOLUTION / 2;
-    //int marginY = Y_SCREEN_RESOLUTION / 2;
+    if(x < marginX0 || x > marginX1)
+    {
+        Y = y;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
+        return;    
+    }
+    
 
-	// int targetx = clamp(Tx, marginX, mapWidth - marginX) - X_SCREEN_RESOLUTION / 2;
-	//int targety = clamp(Ty, marginY, mapHeight - marginY) - Y_SCREEN_RESOLUTION / 2;
-
-	X = Tx;//smooth ? lerp(targetx, mPosition.X.value, smooth_value) : targetx;
-	Y = Ty;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
+	X = x;//smooth ? lerp(targetx, mPosition.X.value, smooth_value) : targetx;
+	Y = y;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
 }

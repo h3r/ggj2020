@@ -1,7 +1,7 @@
 #include "PlayerCopy.hpp"
 #include "GameEntity.hpp"
 #include "Player.hpp"
-#include "Utils.h"
+#include "Utils.hpp"
 #include <stdlib.h>
 #include <stddef.h>
 
