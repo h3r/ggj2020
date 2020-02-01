@@ -7,7 +7,7 @@
 #include <psxgpu.h>
 
 Camera::Camera() :
-    mPosition(Vector2(0, 0))
+    mPosition(Vector2(X_SCREEN_RESOLUTION/2, Y_SCREEN_RESOLUTION/2))
 {
     Default();
 }

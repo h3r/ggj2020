@@ -11,8 +11,6 @@ enum{
 	MAX_LEVEL_SIZE_WIDTH = 32,
 	MAX_LEVEL_SIZE_HEIGHT = 16,
 	TILE_SIZE = 16,
-	TILE_SET_WIDTH = 2,
-	TILE_SET_HEIGHT = 2
 };
 
 class Level{
@@ -27,9 +25,17 @@ public:
 	void GetDimensions(short& w, short& h) const;
 
 private:
-	uint8_t width;
-	uint8_t height;
+	unsigned short width;
+	unsigned short height;
+	unsigned short size;
 	uint8_t tiles[MAX_LEVEL_SIZE_WIDTH*MAX_LEVEL_SIZE_HEIGHT];
 
+	unsigned short tile_set_total_width;
+	unsigned short tile_set_total_height;
+	unsigned char tile_set_zero_u;
+	unsigned char tile_set_zero_v;
+
+	unsigned short tile_set_width_tiles;
+	unsigned short tile_set_height_tiles;
 	GsSprite tile_set;
 };
