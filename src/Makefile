@@ -53,7 +53,7 @@ OBJECTS = $(addprefix $(OBJ_DIR)/,	\
 			main.o Sfx.o Gfx.o Interrupts.o IO.o SystemInit.o	\
 			Menu.o Game.o FileData.o Player.o Timers.o	\
 			Pad.o Serial.o Camera.o Level.o PlayerCopy.o \
-			Player.o Vector2.o ArrayManager.o \
+			Player.o Vector2.o ArrayManager.o Utils.o \
 			AnimatedSprite.o GameEntity.o Controller.o ParticleSystem.o)
 
 # Source dependencies:

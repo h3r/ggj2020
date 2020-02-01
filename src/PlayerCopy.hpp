@@ -11,6 +11,7 @@ public:
     explicit PlayerCopy(const Player &pl);
     void Update(GlobalData &gData) override;
     void Render(const Camera &cam) override;
+    void Trigger();
 
 private:
     const Player &pl;

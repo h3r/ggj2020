@@ -17,7 +17,7 @@ void Camera::Default()
 {
     smoothing = true;
     smooth_value = 0.9;
-    
+
     shake_elapsed = 0;
 	shake_length = 0;
 	shake_amount = 0;
@@ -31,7 +31,7 @@ void Camera::getPosition(short& x, short& y) const
 
 void Camera::Update(const int x, const int y, const Level& level)
 {
-    printf("Cat: [%d,%d] | Cam: [%d,%d]\n", x,y, X,Y);
+    //printf("Cat: [%d,%d] | Cam: [%d,%d]\n", x,y, X,Y);
     LookAt( x, y, level );
 
     if (shake_length > 0)

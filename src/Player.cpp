@@ -210,14 +210,15 @@ void Player::Update(GlobalData &gData)
         {
             case TileType::DAMAGE:{
                 int v = hp - 1;
-                hp = (((0) > (v)) ? (0) : (v));
-                hp = (((7) < (v)) ? (7) : (v));
+                hp = 0 > v ? 0 : v;
+                hp = 7 < v ? 7 : v;
 
                 int ax = x,         ay = y;
                 int bx = new_x ,    by = new_y;
                 int ox = bx - ax,   oy = by - ay;
 
-                if(!CreateCopy(x,y)){
+                if (!gData.pl[mId].plcopies.TriggerFirst())
+                {
                     Reset();
                     SetState(DEAD);
                     hp = 0;

@@ -1,20 +1,17 @@
-
-#pragma once
-
+#include "Utils.h"
 #include "psxgpu.h"
 #include <string.h>
+#include <stdlib.h>
 
-struct vec2{
-    int x;
-    int y;
-};
-
-GsLine CreateLine(const vec2 begin, const vec2 end, unsigned char r, unsigned char g, unsigned char b, bool drawLine = false )
+int rand_min_max(const int min, const int max)
 {
-    GsLine line;
-    // Init values
-    memset(&line, 0, sizeof line);
+    return rand() % (max - min + 1) + min;
+}
 
+GsLine CreateLine(const struct vec2 begin, const struct vec2 end, unsigned char r, unsigned char g, unsigned char b, bool drawLine)
+{
+    GsLine line = {0};
+    // Init values
     line.r = r;
     line.g = g;
     line.b = b;

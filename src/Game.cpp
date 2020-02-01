@@ -245,6 +245,9 @@ static void GameLoop(const size_t players)
         // Render map level
         level.Render(cam);
 
+        pl0copies.update(data);
+        pl1copies.update(data);
+
         // Render players
         pl.render(cam);
 

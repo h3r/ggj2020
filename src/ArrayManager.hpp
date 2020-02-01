@@ -2,6 +2,7 @@
 
 #include "Camera.hpp"
 #include "GameEntity.hpp"
+#include "PlayerCopy.hpp"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -141,6 +142,20 @@ public:
         }
 
         return out;
+    }
+
+    bool TriggerFirst()
+    {
+        for (size_t i = 0; i < mSize; i++)
+        {
+            if (!mArray[i].isActive())
+            {
+                mArray[i].Trigger();
+                return true;
+            }
+        }
+
+        return false;
     }
 
 private:

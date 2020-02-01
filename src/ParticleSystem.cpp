@@ -1,6 +1,6 @@
 
 #include "ParticleSystem.hpp"
-#include "Utils.hpp"
+#include "Utils.h"
 #include "Gfx.h"
 #include "stdlib.h"
 
@@ -38,7 +38,7 @@ void RainSystem::Render(const Camera &cam)
     for (int i = 0; i < N_PARTICLES; i++)
     {
         sParticle p = particles[i];
-        
+
         short x = p.X;
         short y = p.Y;
 
@@ -49,7 +49,7 @@ void RainSystem::Render(const Camera &cam)
         begin.y = y;
 
         vec2 end = vec2();
-        end.x = begin.x + 2; 
+        end.x = begin.x + 2;
         end.y = begin.y + 5;
 
         GsLine line = CreateLine(begin, end, 180, 200, 245, true);
@@ -78,7 +78,7 @@ void RainSystem::Update(GlobalData &gData)
             p->Y = rand() % Y_SCREEN_RESOLUTION + 1;
             p->ttl = 0;
         }
-            
+
 
     }
 }
