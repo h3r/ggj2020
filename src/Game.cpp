@@ -12,6 +12,7 @@
 
 #include "GlobalData.hpp"
 #include "Game.hpp"
+#include "Utils.hpp"
 #include "Gfx.h"
 #include "Menu.h"
 #include "Level.hpp"
@@ -215,6 +216,17 @@ static void GameLoop(const size_t players)
 
     cam.Shake(10, 100);
 
+    vec2 begin = vec2();
+    begin.x = 0;
+    begin.y = 0;
+
+    vec2 end = vec2();
+    end.x = 100;
+    end.y = 100;
+    
+    GsLine line = CreateLine(begin, end, 255, 0, 0);
+
+
     while (GfxIsBusy())
         ;
 
@@ -238,6 +250,9 @@ static void GameLoop(const size_t players)
         level.Render(cam);
 
         pl.render(cam);
+
+        // TESTING LINES
+        DrawLine(&line);
 
         // Last call
         GfxDrawScene();
