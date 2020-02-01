@@ -11,8 +11,8 @@
  * ****************************************************************************/
 
 #include "GlobalData.hpp"
+#include "ParticleSystem.hpp"
 #include "Game.hpp"
-#include "Utils.hpp"
 #include "Gfx.h"
 #include "Menu.h"
 #include "Level.hpp"
@@ -214,32 +214,26 @@ static void GameLoop(const size_t players)
         }
     };
 
-    cam.Shake(10, 100);
-
-    vec2 begin = vec2();
-    begin.x = 0;
-    begin.y = 0;
-
-    vec2 end = vec2();
-    end.x = 100;
-    end.y = 100;
-    
-    GsLine line = CreateLine(begin, end, 255, 0, 0);
-
+    RainSystem rain = {};
 
     while (GfxIsBusy())
         ;
 
     for (;;)
     {
-        // Game logic
+        // GAME LOGIC
+
+        // Update players
         pl.update(data);
 
+        // Update camera
         short x;
         short y;
-
         player_array[0].getPos(x, y);
         cam.Update( x, y, level );
+
+        // Update particle systems
+        rain.Update(data);
 
         // Rendering
         while (GfxIsBusy())
@@ -247,12 +241,14 @@ static void GameLoop(const size_t players)
 
         GfxClear();
 
+        // Render map level
         level.Render(cam);
 
+        // Render players
         pl.render(cam);
 
-        // TESTING LINES
-        DrawLine(&line);
+        // Render particle systems
+        rain.Render(cam);
 
         // Last call
         GfxDrawScene();
