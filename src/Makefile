@@ -54,7 +54,7 @@ OBJECTS = $(addprefix $(OBJ_DIR)/,	\
 			Menu.o Game.o FileData.o Player.o Timers.o	\
 			Pad.o Serial.o Camera.o Level.o PlayerCopy.o \
 			Player.o Vector2.o ArrayManager.o \
-			AnimatedSprite.o GameEntity.o Controller.o)
+			AnimatedSprite.o GameEntity.o Controller.o ParticleSystem.o)
 
 # Source dependencies:
 DEPS = $(OBJECTS:.o=.d)
