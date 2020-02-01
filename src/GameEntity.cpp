@@ -1,5 +1,14 @@
 #include "GameEntity.hpp"
 
+GameEntity::GameEntity(const bool active) :
+    active(active),
+    x(0),
+    y(0),
+    w(0),
+    h(0)
+{
+}
+
 GameEntity::GameEntity(const bool active, const short w, const short h) :
     active(active),
     x(0),

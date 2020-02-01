@@ -13,14 +13,15 @@ enum TileType{
 class GameEntity
 {
 public:
+    explicit GameEntity(bool active);
     GameEntity(bool active, short w, short h);
     virtual void Update(GlobalData &gData) = 0;
     virtual void Render(const Camera &cam) = 0;
     bool isActive() const;
-    void getPos(short &x, short &y) const;
+    virtual void getPos(short &x, short &y) const;
     void setPos(short x, short y);
     TileType type;
-    void getDimensions(short &w, short &h) const;
+    virtual void getDimensions(short &w, short &h) const;
     short getWidth() const;
     short getHeight() const;
     virtual bool Collides(const GameEntity &other, short x, short y) const;
@@ -28,5 +29,5 @@ public:
 protected:
     bool active;
     short x, y;
-    const short w, h;
+    short w, h;
 };
