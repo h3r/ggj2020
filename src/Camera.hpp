@@ -17,14 +17,13 @@ public:
 
     void Update(const int x, const int y, const Level& level);
     void Shake(unsigned int amount, unsigned int length);
-    void LookAt(const int x, const int y, const Level& level, bool smoothing = false);
+    void LookAt(const int x, const int y, const Level& level);
 
 private:
     
     int X;
     int Y;
 
-    bool smoothing;
     float smooth_value; // ojo con el float
 
     unsigned int shake_elapsed;

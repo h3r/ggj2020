@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <psxgpu.h>
 
+int tmpShakingX = 0;
+
 Camera::Camera() :
     X(X_SCREEN_RESOLUTION/2),
     Y(Y_SCREEN_RESOLUTION/2)
@@ -15,9 +17,6 @@ Camera::Camera() :
 
 void Camera::Default()
 {
-    smoothing = true;
-    //smooth_value = 0.9;
-
     shake_elapsed = 0;
 	shake_length = 0;
 	shake_amount = 0;
@@ -47,31 +46,48 @@ void Camera::Update(const int x, const int y, const Level& level)
 
 void Camera::Shake(unsigned int amount, unsigned int length)
 {
+    if (shake_length > 0)
+    {
+        printf("Already shaking camera!");
+        return;
+    }
+
     // Assign shaking values
     shake_amount = amount;
 	shake_length = length;
+
+    tmpShakingX = X;
 }
 
-void Camera::LookAt(const int x, const int y, const Level& level, bool smooth)
+void Camera::LookAt(const int x, const int y, const Level& level)
 {
-    (void)level;
-    (void)smooth;
-
 	short mapWidth;
     short mapHeight;
 
     level.GetDimensions(mapWidth, mapHeight);
 
-	int marginX0 = X_SCREEN_RESOLUTION >> 1;
+	int marginX0 = (X_SCREEN_RESOLUTION >> 1) - 32;
     int marginX1 = mapWidth - (X_SCREEN_RESOLUTION >> 1) - 32;
 
-    if(x < marginX0 || x > marginX1)
+    Y = y;
+
+    if(shake_length > 0)
     {
-        Y = y;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
+        if(x <= marginX0)
+        {
+            X = marginX0;
+        }else if (x >= marginX1)
+        {
+            X = marginX1;
+        }else
+        {
+            X = x;
+        }
         return;
     }
 
-
-	X = x;//smooth ? lerp(targetx, mPosition.X.value, smooth_value) : targetx;
-	Y = y;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
+    if(x >= marginX0 && x <= marginX1)
+    {
+        X = x;
+    }
 }
