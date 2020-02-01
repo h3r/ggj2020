@@ -9,12 +9,14 @@ class PlayerCopy : public GameEntity
 {
 public:
     explicit PlayerCopy(const Player &pl);
-    void Update(GlobalData &gData) override;
+    void UpdateInactive(GlobalData &gData) override;
     void Render(const Camera &cam) override;
+    void StartTimer();
     void Trigger();
 
 private:
     const Player &pl;
     GsSprite spr;
     unsigned int spawn_timer;
+    bool timer_running;
 };

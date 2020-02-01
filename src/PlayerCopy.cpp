@@ -5,21 +5,29 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-#define MIN_SPAWN_TIME 300
-#define MAX_SPAWN_TIME 500
+#define MIN_SPAWN_TIME 1000
+#define MAX_SPAWN_TIME 6000
 
 PlayerCopy::PlayerCopy(const Player &pl) :
     GameEntity(false, pl.getWidth(), pl.getHeight()),
     pl(pl),
-    spawn_timer(rand_min_max(MIN_SPAWN_TIME, MAX_SPAWN_TIME))
+    spawn_timer(0),
+    timer_running(false)
 {
-    printf("Init copy with %d ticks\n", spawn_timer);
+}
+
+void PlayerCopy::StartTimer()
+{
+    spawn_timer = rand_min_max(MIN_SPAWN_TIME, MAX_SPAWN_TIME);
+    timer_running = true;
+    printf("Started copy timer with %d ticks\n", spawn_timer);
 }
 
 void PlayerCopy::Trigger()
 {
     if (pl.isActive())
     {
+        printf("Copy triggered!\n");
         active = true;
 
         const short *last_x_buf, *last_y_buf;
@@ -38,11 +46,11 @@ void PlayerCopy::Trigger()
     }
 }
 
-void PlayerCopy::Update(GlobalData &gData)
+void PlayerCopy::UpdateInactive(GlobalData &gData)
 {
     (void)gData;
 
-    if (pl.isActive())
+    if (timer_running && pl.isActive())
     {
         if (spawn_timer)
             spawn_timer--;

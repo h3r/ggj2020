@@ -76,9 +76,9 @@ public:
             T &t = mArray[i];
 
             if (t.isActive())
-            {
                 t.Update(data);
-            }
+            else
+                t.UpdateInactive(data);
         }
     }
 

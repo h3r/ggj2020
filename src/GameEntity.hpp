@@ -15,7 +15,8 @@ class GameEntity
 public:
     explicit GameEntity(bool active);
     GameEntity(bool active, short w, short h);
-    virtual void Update(GlobalData &gData) = 0;
+    virtual void Update(GlobalData &gData);
+    virtual void UpdateInactive(GlobalData &gData);
     virtual void Render(const Camera &cam) = 0;
     bool isActive() const;
     virtual void getPos(short &x, short &y) const;

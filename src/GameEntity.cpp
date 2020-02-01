@@ -18,6 +18,16 @@ GameEntity::GameEntity(const bool active, const short w, const short h) :
 {
 }
 
+void GameEntity::Update(GlobalData &gData)
+{
+    (void)gData;
+}
+
+void GameEntity::UpdateInactive(GlobalData &gData)
+{
+    (void)gData;
+}
+
 bool GameEntity::isActive() const
 {
     return active;
