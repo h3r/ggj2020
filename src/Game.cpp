@@ -157,6 +157,8 @@ static void GameLoop(const size_t players)
         cam // Camera
     };
 
+    cam.Shake(10, 100);
+
     while (GfxIsBusy())
         ;
 

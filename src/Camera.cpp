@@ -35,13 +35,14 @@ void Camera::Update(const int x, const int y, const Level& level)
 
     if (shake_length > 0)
 	{
-		int shakeX = rand() * shake_amount * 2 - shake_amount;
-		int shakeY = rand() * shake_amount * 2 - shake_amount;
+		/* int shakeX = rand() * shake_amount * 2 - shake_amount;
+		int shakeY = rand() * shake_amount * 2 - shake_amount; */
 
-		X += shakeX;
-		Y += shakeY;
+		X += 10;
+        Y += 10;
+		//Y += shakeY;
 
-		shake_length--;
+		//shake_length--;
 	}
 }
 
@@ -60,10 +61,10 @@ void Camera::LookAt(const int x, const int y, const Level& level, bool smooth)
     int Tx = x;
     int Ty = y;
 
-	short mapWidth;
-    short mapHeight;
+	/* short mapWidth;
+    short mapHeight; */
 
-    level.GetDimensions(mapWidth, mapHeight);
+    //level.GetDimensions(mapWidth, mapHeight);
 
 	//int marginX = X_SCREEN_RESOLUTION / 2;
     //int marginY = Y_SCREEN_RESOLUTION / 2;
