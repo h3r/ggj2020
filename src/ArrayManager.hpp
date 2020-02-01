@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Camera.hpp"
+#include "GameEntity.hpp"
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -122,8 +124,9 @@ public:
         return solid;
     }
 
-    bool collides(T *const t, const short x, const short y) __attribute__((nonnull))
+    GameEntity* collides(T *const t, const short x, const short y) __attribute__((nonnull))
     {
+        GameEntity* out = nullptr;
         for (size_t i = 0; i < mSize; i++)
         {
             if (&mArray[i] != t)
@@ -136,7 +139,7 @@ public:
             }
         }
 
-        return false;
+        return out;
     }
 
 private:

@@ -32,6 +32,7 @@ enum pl_state
     JUMPING,
     FALLING,
     ROLLING,
+    DEAD,
 };
 
 enum pl_direction
@@ -42,6 +43,7 @@ enum pl_direction
 
 class Player : public GameEntity
 {
+    
 public:
     enum playern
     {
@@ -57,6 +59,10 @@ public:
     void Render(const Camera &camera) override;
 
     void SetState(pl_state state);
+    void Hit(unsigned int hp_loss);
+    void Push(int x, int y);
+    bool CreateCopy(int x, int y);
+    void Reset(){/*todo*/}
 
 private:
     const enum playern mId;
@@ -64,6 +70,7 @@ private:
     pl_state state, prev_state;
     pl_direction dir;
     AnimatedSprite running, jumping, idle, rolling, falling;
+    unsigned int hp;
 };
 
 #endif /* PLAYER_H */

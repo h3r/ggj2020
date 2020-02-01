@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "Vector2.hpp"
+
 
 /* *************************************
  * Defines
@@ -103,7 +105,8 @@ Player::Player(const playern player_n, const bool active, const GsSprite &base_s
     jumping(base_spr, animation_config{64, 64, 4, false, 0, 4, jumping_finished}, this),
     idle(base_spr, animation_config{64, 64, 8, true, 5, 7, nullptr}, this),
     rolling(base_spr, animation_config{64, 64, 4, false, 8, 15, rolling_finished}, this),
-    falling(base_spr, animation_config{64, 64, 4, true, 3, 4, nullptr}, this)
+    falling(base_spr, animation_config{64, 64, 4, true, 3, 4, nullptr}, this),
+    hp(7)
 {
 }
 
@@ -159,9 +162,82 @@ void Player::Update(GlobalData &gData)
             break;
     }
 
-    if (!gData.Players.collides(this, new_x, new_y))
+    GameEntity* collided_entity = gData.Players.collides(this, new_x, new_y);
+    if (!collided_entity){
         x = new_x;
+    }
+    else
+    {
+        switch(collided_entity->type)
+        {
+            case TileType::DAMAGE:{
+                int v = hp - 1;
+                hp = (((0) > (v)) ? (0) : (v));
+                hp = (((7) < (v)) ? (7) : (v));
+                
+                int ax = x,         ay = y;
+                int bx = new_x ,    by = new_y;
+                int ox = bx - ax,   oy = by - ay;
+
+                if(!CreateCopy(x,y)){
+                    Reset();
+                    SetState(DEAD);
+                    hp = 0;
+                    break;
+                }
+
+                Push(-ox, -oy);
+
+                break;
+            }
+
+            case TileType::PLAYER:{
+                int ax = x,         ay = y;
+                int bx = new_x ,    by = new_y;
+                int ox = bx - ax,   oy = by - ay;
+
+                Push(-ox, -oy + 1);
+
+                break;
+            }
+
+            case TileType::PLAYER_COPY:{
+
+                if(!collided_entity->isActive()) break;
+
+                int v = hp + 1;
+                hp = (((0) > (v)) ? (0) : (v));
+                hp = (((7) < (v)) ? (7) : (v));
+
+                int ax = x,         ay = y;
+                int bx = new_x ,    by = new_y;
+                int ox = bx - ax,   oy = by - ay;
+
+                Push(-ox, -oy + 1);
+
+                break;
+            }
+
+            default: break;
+
+        }
+
+    }
+    
 }
+
+void Player::Push(int x, int y){
+    x += x;
+    y += y;
+}
+
+bool Player::CreateCopy(int x, int y){
+    /*todo*/
+    (void)x;
+    (void)y;
+    return true;
+}
+
 
 void Player::Render(const Camera &camera)
 {

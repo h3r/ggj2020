@@ -3,6 +3,13 @@
 #include "Camera.hpp"
 #include "GlobalData.hpp"
 
+enum TileType{
+    SCENARIO = 0,
+    PLAYER = 1,
+    PLAYER_COPY = 2,
+    DAMAGE = 3
+};
+
 class GameEntity
 {
 public:
@@ -12,6 +19,7 @@ public:
     bool isActive() const;
     void getPos(short &x, short &y) const;
     void setPos(short x, short y);
+    TileType type;
 
 protected:
     bool active;
