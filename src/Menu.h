@@ -24,16 +24,15 @@
  * *************************************/
 
 #ifdef __cplusplus
-#define EXTERNC extern "C"
-#else
-#define EXTERNC
+extern "C"
+{
 #endif
 
 /* *************************************
  * Public types definition
  * *************************************/
 
-EXTERNC enum tMenuResult
+enum tMenuResult
 {
     MENU_RESULT_UNDEFINED,
     MENU_RESULT_EDITOR,
@@ -48,8 +47,12 @@ EXTERNC enum tMenuResult
  * Public functions declaration
  * *************************************/
 
-EXTERNC enum tMenuResult Menu(size_t* players);
-EXTERNC enum tLevel MenuGetSelectedLevel(void);
-EXTERNC size_t MenuGetSelectedPlayers(void);
+enum tMenuResult Menu(size_t* players);
+enum tLevel MenuGetSelectedLevel(void);
+size_t MenuGetSelectedPlayers(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* MENU_H */

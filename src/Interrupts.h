@@ -15,6 +15,11 @@
  * Includes
  * *************************************/
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /* *************************************
  * Defines
  * *************************************/
@@ -55,5 +60,9 @@ enum InterruptSource
 
 void InterruptsEnableInt(const enum InterruptSource intSource);
 void InterruptsDisableInt(const enum InterruptSource intSource);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INTERRUPTS_H */

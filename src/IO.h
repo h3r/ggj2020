@@ -18,6 +18,11 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /* *************************************
  * Defines
  * *************************************/
@@ -37,5 +42,9 @@
  * *************************************/
 
 const uint8_t *IOLoadFile(const char* const strFilePath, size_t* const fileSize);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IO_H */
