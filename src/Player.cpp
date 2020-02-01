@@ -16,6 +16,7 @@
 #include "Player.hpp"
 #include "GlobalData.hpp"
 #include "AnimatedSprite.hpp"
+#include "Level.hpp"
 #include "Serial.h"
 #include "Gfx.h"
 #include "Sfx.h"
@@ -160,8 +161,18 @@ unsigned int Player::GetRecordTime()
 
 void Player::UpdateCollision(GlobalData &gData, const short new_x, const short new_y)
 {
+    short level_w, level_h;
+    const short exc = PLAYER_SZ >> 1;
+
+    gData.level.GetDimensions(level_w, level_h);
+
+    if ((new_x - exc) < 0 || (new_y - exc) < 0)
+        return;
+    else if ((new_x + (exc << 1)) > level_w || (new_y + exc) > level_h)
+        return;
+
     GameEntity* collided_entity = gData.Players.collides(this, new_x, new_y);
-    if (!collided_entity){
+    if (!collided_entity) {
         x = new_x;
     }
     else
