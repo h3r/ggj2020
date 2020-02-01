@@ -217,7 +217,7 @@ void Player::Update(GlobalData &gData)
                 int bx = new_x ,    by = new_y;
                 int ox = bx - ax,   oy = by - ay;
 
-                if (!gData.pl[mId].plcopies.TriggerFirst())
+                if (!gData.pl[mId].plcopies.TriggerFirst(gData))
                 {
                     Reset();
                     SetState(DEAD);
@@ -263,6 +263,11 @@ void Player::Update(GlobalData &gData)
 
     }
 
+}
+
+enum Player::playern Player::getId() const
+{
+    return mId;
 }
 
 void Player::getPos(short &x, short &y) const

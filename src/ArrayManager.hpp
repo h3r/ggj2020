@@ -144,13 +144,27 @@ public:
         return out;
     }
 
-    bool TriggerFirst()
+    bool StartFirst()
     {
         for (size_t i = 0; i < mSize; i++)
         {
             if (!mArray[i].isActive())
             {
-                mArray[i].Trigger();
+                mArray[i].StartTimer();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    bool TriggerFirst(GlobalData &gData)
+    {
+        for (size_t i = 0; i < mSize; i++)
+        {
+            if (!mArray[i].isActive())
+            {
+                mArray[i].Trigger(gData);
                 return true;
             }
         }

@@ -35,7 +35,7 @@ enum{
 	LEVEL_TILE_GROUND_TR,
 	LEVEL_TILE_GROUND_BL,
 	LEVEL_TILE_GROUND_BR,
-	
+
 	LEVEL_TILE_GROUND_B,
 	LEVEL_TILE_GROUND_B2,
 	LEVEL_TILE_GROUND_L,
@@ -120,11 +120,13 @@ bool Level::Load(const char* file_name){
     printf("w:%u  h:%u\n", width, height);
 
     for (size_t i=0; i<level_size; i++) {
-    	if(buffer[i+2] >= LEVEL_MAX_TILES) 
+    	if(buffer[i+2] >= LEVEL_MAX_TILES)
 			return false;
     	tiles[i] = buffer[i+2];
 		printf("%u", tiles[i]);
     }
+
+	printf("\n");
 
     return true;
 }

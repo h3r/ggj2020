@@ -12,7 +12,7 @@ public:
     void UpdateInactive(GlobalData &gData) override;
     void Render(const Camera &cam) override;
     void StartTimer();
-    void Trigger();
+    void Trigger(GlobalData &gData);
 
 private:
     const Player &pl;

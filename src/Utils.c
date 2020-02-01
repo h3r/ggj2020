@@ -2,6 +2,7 @@
 #include "psxgpu.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 int rand_min_max(const int min, const int max)
 {

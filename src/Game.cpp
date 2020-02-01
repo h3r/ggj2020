@@ -215,7 +215,13 @@ static void GameLoop(const size_t players)
         }
     };
 
-    RainSystem rain = {};
+    RainSystem rain;
+
+    if (player_array[0].isActive())
+        pl0copies.StartFirst();
+
+    if (player_array[1].isActive())
+        pl1copies.StartFirst();
 
     while (GfxIsBusy())
         ;

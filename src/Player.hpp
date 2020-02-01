@@ -61,6 +61,7 @@ public:
     void Update(GlobalData &gData) override;
     void Render(const Camera &camera) override;
     void getPos(short &x, short &y) const override;
+    enum playern getId() const;
 
     void SetState(pl_state state);
     void Hit(unsigned int hp_loss);

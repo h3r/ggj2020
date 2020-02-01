@@ -23,7 +23,7 @@ void PlayerCopy::StartTimer()
     printf("Started copy timer with %d ticks\n", spawn_timer);
 }
 
-void PlayerCopy::Trigger()
+void PlayerCopy::Trigger(GlobalData &gData)
 {
     if (pl.isActive())
     {
@@ -43,6 +43,8 @@ void PlayerCopy::Trigger()
 
             setPos(x, y);
         }
+
+        gData.pl[pl.getId()].plcopies.StartFirst();
     }
 }
 
@@ -57,7 +59,7 @@ void PlayerCopy::UpdateInactive(GlobalData &gData)
         else if (!active)
         {
             // Create copy!
-            Trigger();
+            Trigger(gData);
         }
     }
 }
