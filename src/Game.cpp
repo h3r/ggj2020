@@ -43,8 +43,6 @@
 
 static Level level;
 
-static GsSprite test_sprite;
-
 #include "AnimatedSprite.hpp"
 
 /* *****************************************************************************
@@ -135,7 +133,6 @@ static void GameInitFiles(void)
     Player::Init(&gatete);
     level.LoadAssets();
     level.TestLevel();
-    GfxSpriteFromFile("DATA\\SPRITES\\test.TIM", &test_sprite);
 }
 
 static void GameLoop(const size_t players)
@@ -164,9 +161,6 @@ static void GameLoop(const size_t players)
         cam
     };
 
-    test_sprite.x = (X_SCREEN_RESOLUTION >> 1) - 32;
-    test_sprite.y = (Y_SCREEN_RESOLUTION >> 1) - 32;
-
     while (GfxIsBusy())
         ;
 
@@ -182,8 +176,6 @@ static void GameLoop(const size_t players)
         GfxClear();
 
         level.Render(cam);
-
-        GfxSortSprite(&test_sprite);
 
         pl.render(cam);
         GfxDrawScene();

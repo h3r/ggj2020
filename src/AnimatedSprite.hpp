@@ -14,7 +14,7 @@ struct animation_config
 {
     short w, h;
     uint32_t nticks;
-    bool loop, reverse;
+    bool loop;
     uint8_t start_frame, end_frame;
     animation_end_cb cb;
 };
