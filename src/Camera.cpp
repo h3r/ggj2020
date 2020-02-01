@@ -31,17 +31,15 @@ void Camera::getPosition(short& x, short& y) const
 
 void Camera::Update(const int x, const int y, const Level& level)
 {
-    //printf("Cat: [%d,%d] | Cam: [%d,%d]\n", x,y, X,Y);
     LookAt( x, y, level );
 
     if (shake_length > 0)
 	{
-		/* int shakeX = rand() * shake_amount * 2 - shake_amount;
-		int shakeY = rand() * shake_amount * 2 - shake_amount; */
+		int shakeX = rand() % (shake_amount * 2) - shake_amount;
+		int shakeY = rand() % (shake_amount * 2) - shake_amount;
 
-		//X += 10;
-        //Y += 10;
-		//Y += shakeY;
+        X += shakeX;
+		Y += shakeY;
 
 		//shake_length--;
 	}
