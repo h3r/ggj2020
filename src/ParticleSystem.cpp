@@ -11,11 +11,6 @@ ParticleSystem::ParticleSystem()
 
 RainSystem::RainSystem()
 {
-    Init();
-}
-
-void RainSystem::Init()
-{
     for (int i = 0; i < N_PARTICLES; i++)
     {
         sParticle p = sParticle();
@@ -30,6 +25,8 @@ void RainSystem::Init()
         particles[i] = p;
     }
 }
+
+
 
 void RainSystem::Render(const Camera &cam)
 {
