@@ -21,6 +21,7 @@
 #include "ArrayManager.hpp"
 #include "Camera.hpp"
 #include "Serial.h"
+#include "Utils.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -135,6 +136,7 @@ static void GameInitFiles(void)
     Player::Init(&gatete);
     level.LoadAssets();
     level.Load("DATA\\LEVELS\\level.lvl");
+    LoadCharTileSet();
 }
 
 static void GameLoop(const size_t players)
@@ -211,7 +213,8 @@ static void GameLoop(const size_t players)
         {
             pl0copies,
             pl1copies
-        }
+        },
+        level
     };
 
     RainSystem rain;
@@ -251,6 +254,8 @@ static void GameLoop(const size_t players)
 
         // Render map level
         level.Render(cam);
+
+        DrawText("HOLI\0", 20, 20, 255, 255, 0);
 
         pl0copies.update(data);
         pl1copies.update(data);

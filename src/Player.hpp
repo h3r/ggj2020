@@ -102,6 +102,10 @@ private:
     short last_x[LAST_MOVEMENTS_BUF_SIZE], last_y[LAST_MOVEMENTS_BUF_SIZE];
     GsSprite last_sprites[LAST_MOVEMENTS_BUF_SIZE];
     box b;
+    unsigned int record_timer;
+
+    void UpdateCollision(GlobalData &gData, short new_x, short new_y);
+    unsigned int GetRecordTime();
 };
 
 #endif /* PLAYER_H */
