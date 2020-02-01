@@ -11,6 +11,7 @@
  * *************************************/
 
 #include "Level.hpp"
+#include "Camera.hpp"
 #include "IO.h"
 #include "Gfx.h"
 
@@ -47,7 +48,7 @@ enum{
  * Functions definition
  * *************************************/
 Level::Level() : width(0), height(0){
-
+	tile_set.w = tile_set.h = TILE_SIZE;
 }
 
 void Level::Update(GlobalData& data){
@@ -55,28 +56,25 @@ void Level::Update(GlobalData& data){
 }
 
 void Level::Render(const Camera& cam){
-//	short x, y;
-//	cam.getPosition(&x, &y);
-//
-//
-//
-//	uint8_t x_tile = x / TILE_SIZE;
-//	uint8_t y_tile = y / TILE_SIZE;
-//
-//	uint8_t horizontal_tiles = 1 + X_SCREEN_RESOLUTION / TILE_SIZE;
-//	uint8_t vertical_tiles = 1 + Y_SCREEN_RESOLUTION / TILE_SIZE;
-//
-//	for(uint8_t i=0; i<horizontal_tiles; i++){
-//		for(uint8_t j=0; j<vertical_tiles; j++){
-//
-//		}
-//	}
+	for(uint8_t i=0; i<width; i++){
+		for(uint8_t j=0; j<height; j++){
+			tile_set.x = i * TILE_SIZE;
+			tile_set.y = j * TILE_SIZE;
+			cam.getPosition(tile_set.x, tile_set.y);
+
+			const uint8_t tile = tiles[i + j*TILE_SET_WIDTH];
+			tile_set.u = tile % TILE_SET_WIDTH;
+			tile_set.v = tile / TILE_SET_HEIGHT;
+
+			GfxSortSprite(&tile_set);
+		}
+	}
 }
 
 bool Level::Load(const char* file_name){
 	/* File size in bytes. Modified by IOLoadFile(). */
     size_t e_size;
-    size_t level_size = MAX_LEVEL_SIZE_X*MAX_LEVEL_SIZE_Y;
+    size_t level_size = MAX_LEVEL_SIZE_WIDTH*MAX_LEVEL_SIZE_HEIGHT;
 
     /* Get buffer address where file data is contained. */
     const uint8_t *const buffer = IOLoadFile(file_name, &e_size);
@@ -96,12 +94,12 @@ bool Level::Load(const char* file_name){
 }
 
 bool Level::LoadAssets(){
-	return GfxSpriteFromFile("DATA\\SPRITES\\tileset.bmp", &tile_set);
+	return GfxSpriteFromFile("DATA\\SPRITES\\tileset.TIM", &tile_set);
 }
 
 void Level::TestLevel(){
-	width = 16;
-	height = 16;
+	width = MAX_LEVEL_SIZE_WIDTH;
+	height = MAX_LEVEL_SIZE_HEIGHT;
 	for(size_t i=0; i<width*height; i++){
 		tiles[i] = i%2;
 	}

@@ -127,6 +127,8 @@ static void GameInit(const size_t players)
 static void GameInitFiles(void)
 {
     Player::Init();
+    level.LoadAssets();
+    level.TestLevel();
     GfxSpriteFromFile("DATA\\SPRITES\\test.TIM", &test_sprite);
 }
 
@@ -167,6 +169,8 @@ static void GameLoop(const size_t players)
             ;
 
         GfxClear();
+
+        level.Render(cam);
 
         GfxSortSprite(&test_sprite);
 
