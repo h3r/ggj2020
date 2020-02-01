@@ -200,7 +200,7 @@ void Player::UpdateCollision(GlobalData &gData, const short new_x, const short n
         if (!gData.level.IsTileSolid(new_x, new_y))
         {
             x = new_x;
-            //y = new_y;
+            y = new_y;
         }
     }
     else
