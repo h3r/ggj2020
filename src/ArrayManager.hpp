@@ -11,12 +11,12 @@ template<class T>
 class ArrayManager
 {
 public:
-    ArrayManager(const size_t size, T *const a) :
+    ArrayManager(const size_t size, T *const a) __attribute__((nonnull)) :
         mSize(size),
         mLast(0),
         mArray(a)
     {
-        if (!a || !size)
+        if (!size)
         {
             printf("Invalid given information\n");
             while (1);
@@ -117,8 +117,31 @@ public:
         }
     }
 
+    bool isSolid() const
+    {
+        return solid;
+    }
+
+    bool collides(T *const t, const short x, const short y) __attribute__((nonnull))
+    {
+        for (size_t i = 0; i < mSize; i++)
+        {
+            if (&mArray[i] != t)
+            {
+                (void)x;(void)y;
+            }
+            else
+            {
+                // Avoid calculating collision with itself
+            }
+        }
+
+        return false;
+    }
+
 private:
     const size_t mSize;
     size_t mLast;
     T *const mArray;
+    bool solid;
 };

@@ -30,6 +30,7 @@ enum pl_state
     IDLE,
     RUNNING,
     JUMPING,
+    FALLING,
     ROLLING,
 };
 
@@ -62,7 +63,7 @@ private:
     Pad pad;
     pl_state state, prev_state;
     pl_direction dir;
-    AnimatedSprite running, jumping, idle, rolling;
+    AnimatedSprite running, jumping, idle, rolling, falling;
 };
 
 #endif /* PLAYER_H */
