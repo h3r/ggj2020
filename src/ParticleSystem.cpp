@@ -19,12 +19,12 @@ void RainSystem::Init()
     for (int i = 0; i < N_PARTICLES; i++)
     {
         sParticle p = sParticle();
-        p.X = rand() * X_SCREEN_RESOLUTION + 1;
-        p.Y = rand() * Y_SCREEN_RESOLUTION + 1;
+        p.X = rand() % X_SCREEN_RESOLUTION + 1;
+        p.Y = rand() % Y_SCREEN_RESOLUTION + 1;
         p.accX = 1;
         p.accY = 3;
-        p.speed = 2;
-        p.lifespan = 100;
+        p.speed = rand() % 2 + 1;
+        p.lifespan = rand() % 150 + 50;
         p.ttl = 0;
 
         particles[i] = p;
@@ -72,10 +72,10 @@ void RainSystem::Update(GlobalData &gData)
 
 		// Reset position once they reach the limit
         // TO DO
-        if(p->ttl > p->lifespan)
+        if(p->ttl > p->lifespan || p->Y < 0)
         {
-            p->X = rand() * X_SCREEN_RESOLUTION + 1;
-            p->Y = rand() * Y_SCREEN_RESOLUTION + 1;
+            p->X = rand() % X_SCREEN_RESOLUTION + 1;
+            p->Y = rand() % Y_SCREEN_RESOLUTION + 1;
             p->ttl = 0;
         }
             

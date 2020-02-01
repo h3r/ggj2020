@@ -3,7 +3,7 @@
 #include "GlobalData.hpp"
 #include "Camera.hpp"
 
-#define N_PARTICLES 300
+#define N_PARTICLES 200
 
 struct sParticle{
 

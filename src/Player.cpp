@@ -141,7 +141,7 @@ Player::Player(const playern player_n, const bool active, const GsSprite &base_s
     dir(RIGHT),
     running(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, true, 16, 21, nullptr}, running_box, this),
     jumping(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 5, false, 0, 4, jumping_finished}, jumping_box, this),
-    idle(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 28, true, 5, 7, nullptr}, idle_box, this),
+    idle(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 16, true, 5, 7, nullptr}, idle_box, this),
     rolling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, false, 8, 15, rolling_finished}, rolling_box, this),
     falling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, true, 3, 4, nullptr}, nullptr, this),
     hp(7)
