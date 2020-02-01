@@ -62,9 +62,8 @@ static const uint8_t *IOLoadFileFromCd(char* const buffer, size_t* const fileSiz
 * \brief    Loads a file with absolute file path indicated by
 *           strFileName.
 *
-*           File data is stored into a dynamically-allocated buffer
-*           (via calls to malloc()) which can then be handled
-*           by external modules.
+*           File data is stored into a statically-allocated buffer
+*           which can then be handled by external modules.
 *
 * \param    strFilePath
 *               Relative file path e.g.:

@@ -14,6 +14,7 @@
 #include "Game.hpp"
 #include "Gfx.h"
 #include "Menu.h"
+#include "Level.hpp"
 #include "Player.hpp"
 #include "ArrayManager.hpp"
 #include "Camera.hpp"
@@ -39,6 +40,8 @@
 /* *****************************************************************************
  * Local variables definition
  * ****************************************************************************/
+
+static Level level;
 
 static GsSprite playerSpr;
 static GsSprite test_sprite;
