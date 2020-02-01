@@ -20,4 +20,4 @@ private:
 	uint8_t width;
 	uint8_t height;
 	uint8_t tiles[MAX_LEVEL_SIZE_X*MAX_LEVEL_SIZE_Y];
-}
+};
