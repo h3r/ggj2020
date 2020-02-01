@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *const args, const char *const id) :
+AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *const args) :
     c(c),
     spr(base_spr),
     // Remember original width/height and texture page.
@@ -29,8 +29,7 @@ AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config 
     ticks_c(0),
     frames_c(0),
     finished(false),
-    args(args),
-    id(id)
+    args(args)
 {
     // Sprite is already assumed to be loaded.
     if (!base_spr.w || !base_spr.h || !base_spr.tpage)

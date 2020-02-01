@@ -99,10 +99,10 @@ Player::Player(const playern player_n, const bool active, const GsSprite &base_s
     state(IDLE),
     prev_state(state),
     dir(RIGHT),
-    running(base_spr, animation_config{64, 64, 4, true, 16, 21, nullptr}, this, "running"),
-    jumping(base_spr, animation_config{64, 64, 4, false, 0, 4, jumping_finished}, this, "jumping"),
-    idle(base_spr, animation_config{64, 64, 8, true, 5, 7, nullptr}, this, "idle"),
-    rolling(base_spr, animation_config{64, 64, 4, false, 8, 15, rolling_finished}, this, "rolling")
+    running(base_spr, animation_config{64, 64, 4, true, 16, 21, nullptr}, this),
+    jumping(base_spr, animation_config{64, 64, 4, false, 0, 4, jumping_finished}, this),
+    idle(base_spr, animation_config{64, 64, 8, true, 5, 7, nullptr}, this),
+    rolling(base_spr, animation_config{64, 64, 4, false, 8, 15, rolling_finished}, this)
 {
 }
 

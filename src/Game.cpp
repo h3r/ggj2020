@@ -145,11 +145,14 @@ static void GameLoop(const size_t players)
     (void)players;
 
     // Players
-    Player player_array[1] =
+    Player player_array[2] =
     {
         {Player::PLAYER_ONE, players > Player::PLAYER_ONE, gatete},
-        //{Player::PLAYER_TWO, players > Player::PLAYER_TWO, gatete}
+        {Player::PLAYER_TWO, players > Player::PLAYER_TWO, gatete}
     };
+
+    player_array[0].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 64);
+    player_array[1].setPos((X_SCREEN_RESOLUTION >> 1) - 64, Y_SCREEN_RESOLUTION - 64);
 
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
 
