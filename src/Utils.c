@@ -16,6 +16,7 @@ GsLine CreateLine(const struct vec2 begin, const struct vec2 end, unsigned char 
     line.r = r;
     line.g = g;
     line.b = b;
+    line.attribute = ENABLE_TRANS | TRANS_MODE(0);
 
     line.x[0] = begin.x;
     line.x[1] = end.x;
