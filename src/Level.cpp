@@ -18,6 +18,8 @@
 /* *************************************
  * Defines
  * *************************************/
+
+//Tiles
 enum{
 	LEVEL_TILE_EMPTY,
 	LEVEL_TILE_EMPTY_2,
@@ -38,6 +40,12 @@ enum{
 
 
 	LEVEL_MAX_TILES
+};
+
+//Terran types
+enum{
+	LEVEL_TILE_AIR = '.',
+	LEVEL_TILE_FLOOR = '_'
 };
 
 /* *************************************
@@ -82,24 +90,30 @@ void Level::Render(const Camera& cam){
 	}
 }
 
+#include <stdio.h>
+
 bool Level::Load(const char* file_name){
 	/* File size in bytes. Modified by IOLoadFile(). */
     size_t e_size;
-    size_t level_size = MAX_LEVEL_SIZE_WIDTH*MAX_LEVEL_SIZE_HEIGHT;
+//    size_t level_size;
 
     /* Get buffer address where file data is contained. */
     const uint8_t *const buffer = IOLoadFile(file_name, &e_size);
 
-    if(!buffer || e_size == IO_INVALID_FILE_SIZE || e_size != (level_size+2))
+    if(!buffer || e_size == IO_INVALID_FILE_SIZE)
     	return false;
+
+//    level_size = e_size - 2;
 
     width = buffer[0];
     height = buffer[1];
 
-    for (size_t i=0; i<level_size; i++) {
-    	if(buffer[i+2]<LEVEL_MAX_TILES) return false;
-    	tiles[i] = buffer[i+2];
-    }
+    printf("w:%u  h:%u\n", width, height);
+
+//    for (size_t i=0; i<level_size; i++) {
+//    	if(buffer[i+2]<LEVEL_MAX_TILES) return false;
+//    	tiles[i] = buffer[i+2];
+//    }
 
     return true;
 }

@@ -83,8 +83,7 @@ SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, test.TIM \
 #Level objects:
 SRC_LEVEL_PATH = $(PROJECT_DIR)/src/levels
 OBJ_LEVEL_PATH = $(CDROM_ROOT)/DATA/LEVELS
-LEVEL_OBJECTS = $(addprefix $(OBJ_LEVEL_PATH)/, test.txt)
-
+LEVEL_OBJECTS = $(addprefix $(OBJ_LEVEL_PATH)/, level.lvl)
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.
@@ -164,7 +163,7 @@ $(OBJ_SPRITES_PATH)/%.TIM: $(SRC_SPRITES_PATH)/%.bmp $(SRC_SPRITES_PATH)/%.flags
 	@mkdir -p $(OBJ_SPRITES_PATH)
 	$(BMP2TIM) $< $@ `cat $(word 2,$^)`
 
-$(OBJ_LEVEL_PATH)/%.txt: $(SRC_LEVEL_PATH)/%.txt
+$(OBJ_LEVEL_PATH)/%.lvl: $(SRC_LEVEL_PATH)/%.lvl
 	@mkdir -p $(OBJ_LEVEL_PATH)
 	cp $^ $@
 

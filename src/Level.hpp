@@ -25,6 +25,8 @@ public:
 	void GetDimensions(short& w, short& h) const;
 
 private:
+	bool levelLoaded;
+
 	unsigned short width;
 	unsigned short height;
 	uint8_t tiles[MAX_LEVEL_SIZE_WIDTH*MAX_LEVEL_SIZE_HEIGHT];

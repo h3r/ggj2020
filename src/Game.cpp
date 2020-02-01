@@ -134,7 +134,8 @@ static void GameInitFiles(void)
 {
     Player::Init(&gatete);
     level.LoadAssets();
-    level.TestLevel();
+    level.Load("DATA\\LEVELS\\level.lvl");
+    //level.TestLevel();
 }
 
 static void GameLoop(const size_t players)
