@@ -238,6 +238,8 @@ static void GameLoop(const size_t players)
         level.Render(cam);
 
         pl.render(cam);
+
+        // Last call
         GfxDrawScene();
     }
 }
