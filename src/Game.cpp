@@ -241,7 +241,7 @@ static void GameLoop(const size_t players)
         cam.Update( x, y, level );
 
         // Update particle systems
-        //rain.Update(data);
+        rain.Update(data);
 
         // Rendering
         while (GfxIsBusy())
@@ -259,7 +259,7 @@ static void GameLoop(const size_t players)
         pl.render(cam);
 
         // Render particle systems
-        //rain.Render(cam);
+        rain.Render(cam);
 
         // Last call
         GfxDrawScene();
