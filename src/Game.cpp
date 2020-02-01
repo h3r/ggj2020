@@ -216,6 +216,8 @@ static void GameLoop(const size_t players)
 
     RainSystem rain;
 
+    cam.Shake(5, 10);
+
     if (player_array[0].isActive())
         pl0copies.StartFirst();
 
