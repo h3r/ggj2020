@@ -7,13 +7,8 @@
 #include <psxgpu.h>
 
 Camera::Camera() :
-    mPosition(Vector2(X_SCREEN_RESOLUTION/2, Y_SCREEN_RESOLUTION/2))
-{
-    Default();
-}
-
-Camera::Camera(const Vector2& initialPos) :
-    mPosition(initialPos)
+    X(X_SCREEN_RESOLUTION/2),
+    Y(Y_SCREEN_RESOLUTION/2)
 {
     Default();
 }
@@ -30,21 +25,21 @@ void Camera::Default()
 
 void Camera::getPosition(short& x, short& y) const
 {
-    x += (X_SCREEN_RESOLUTION >> 1) - fix16_to_int(mPosition.X.value);
-    y += (Y_SCREEN_RESOLUTION >> 1) - fix16_to_int(mPosition.Y.value);
+    x += ((X_SCREEN_RESOLUTION >> 1) - 32) - X;
+    y += (Y_SCREEN_RESOLUTION - 64) - Y; // Camera is not centered in Y
 }
 
-void Camera::Update(const Vector2& target, const Level& level)
+void Camera::Update(const int x, const int y, const Level& level)
 {
-    LookAt( target, level );
+    LookAt( x, y, level );
 
     if (shake_length > 0)
 	{
 		int shakeX = rand() * shake_amount * 2 - shake_amount;
 		int shakeY = rand() * shake_amount * 2 - shake_amount;
 
-		mPosition.X += shakeX;
-		mPosition.Y += shakeY;
+		X += shakeX;
+		Y += shakeY;
 
 		shake_length--;
 	}
@@ -57,22 +52,25 @@ void Camera::Shake(unsigned int amount, unsigned int length)
 	shake_length = length;
 }
 
-void Camera::LookAt(const Vector2& target, const Level& level, bool smooth)
+void Camera::LookAt(const int x, const int y, const Level& level, bool smooth)
 {
     (void)level;
     (void)smooth;
 
-	/* short mapWidth;
+    int Tx = x;
+    int Ty = y;
+
+	short mapWidth;
     short mapHeight;
 
     level.GetDimensions(mapWidth, mapHeight);
 
-	int marginX = X_SCREEN_RESOLUTION / 2;
-    int marginY = Y_SCREEN_RESOLUTION / 2;
+	//int marginX = X_SCREEN_RESOLUTION / 2;
+    //int marginY = Y_SCREEN_RESOLUTION / 2;
 
-	int targetx = clamp(target.X.value, marginX, mapWidth - marginX) - X_SCREEN_RESOLUTION / 2;
-	int targety = clamp(target.Y.value, marginY, mapHeight - marginY) - Y_SCREEN_RESOLUTION / 2; */
+	// int targetx = clamp(Tx, marginX, mapWidth - marginX) - X_SCREEN_RESOLUTION / 2;
+	//int targety = clamp(Ty, marginY, mapHeight - marginY) - Y_SCREEN_RESOLUTION / 2;
 
-	mPosition.X = target.X;//smooth ? lerp(targetx, mPosition.X.value, smooth_value) : targetx;
-	mPosition.Y = target.Y;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
+	X = Tx;//smooth ? lerp(targetx, mPosition.X.value, smooth_value) : targetx;
+	Y = Ty;//smooth ? lerp(targety, mPosition.Y.value, smooth_value) : targety;
 }

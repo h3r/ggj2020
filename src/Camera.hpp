@@ -10,22 +10,22 @@ class Camera
 public:
     
     Camera();
-    Camera(const Vector2& initialPos);
 
     void Default();
     
     void getPosition(short& x, short& y) const;
 
-    void Update(const Vector2& target, const Level& level);
+    void Update(const int x, const int y, const Level& level);
     void Shake(unsigned int amount, unsigned int length);
-    void LookAt(const Vector2& target, const Level& level, bool smoothing = false);
+    void LookAt(const int x, const int y, const Level& level, bool smoothing = false);
 
 private:
     
-    Vector2 mPosition;
+    int X;
+    int Y;
 
     bool smoothing;
-    float smooth_value;
+    float smooth_value; // ojo con el float
 
     unsigned int shake_elapsed;
 	unsigned int shake_length;
