@@ -14,6 +14,6 @@ class ArrayManager;
 
 struct GlobalData
 {
-    ArrayManager<Player>& Players;
+    ArrayManager<Player> &Players;
     Camera &camera;
 };

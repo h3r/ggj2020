@@ -122,13 +122,14 @@ public:
         return solid;
     }
 
-    bool collides(T *const t, const short x, const short y) __attribute__((nonnull))
+    bool Collides(T *const t, const short x, const short y) __attribute__((nonnull))
     {
         for (size_t i = 0; i < mSize; i++)
         {
             if (&mArray[i] != t)
             {
-                (void)x;(void)y;
+                if (t->Collides(mArray[i], x, y))
+                    return true;
             }
             else
             {

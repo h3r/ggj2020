@@ -139,8 +139,6 @@ static void GameLoop(const size_t players)
 {
     Camera cam;
 
-    (void)players;
-
     // Players
     Player player_array[2] =
     {

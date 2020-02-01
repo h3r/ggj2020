@@ -55,7 +55,6 @@ public:
 
     void Update(GlobalData &gData) override;
     void Render(const Camera &camera) override;
-
     void SetState(pl_state state);
 
 private:

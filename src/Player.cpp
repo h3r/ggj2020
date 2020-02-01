@@ -36,6 +36,8 @@
  * Types definition
  * *************************************/
 
+#define PLAYER_SZ ((short)64)
+
 /* *************************************
  * Global variables definition
  * *************************************/
@@ -93,17 +95,17 @@ void Player::SetState(const pl_state state)
 }
 
 Player::Player(const playern player_n, const bool active, const GsSprite &base_spr) :
-    GameEntity(active),
+    GameEntity(active, PLAYER_SZ, PLAYER_SZ),
     mId(player_n),
     pad(player_n),
     state(IDLE),
     prev_state(state),
     dir(RIGHT),
-    running(base_spr, animation_config{64, 64, 4, true, 16, 21, nullptr}, this),
-    jumping(base_spr, animation_config{64, 64, 4, false, 0, 4, jumping_finished}, this),
-    idle(base_spr, animation_config{64, 64, 8, true, 5, 7, nullptr}, this),
-    rolling(base_spr, animation_config{64, 64, 4, false, 8, 15, rolling_finished}, this),
-    falling(base_spr, animation_config{64, 64, 4, true, 3, 4, nullptr}, this)
+    running(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, true, 16, 21, nullptr}, this),
+    jumping(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, false, 0, 4, jumping_finished}, this),
+    idle(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 8, true, 5, 7, nullptr}, this),
+    rolling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, false, 8, 15, rolling_finished}, this),
+    falling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, true, 3, 4, nullptr}, this)
 {
 }
 
@@ -159,7 +161,7 @@ void Player::Update(GlobalData &gData)
             break;
     }
 
-    if (!gData.Players.collides(this, new_x, new_y))
+    if (!gData.Players.Collides(this, new_x, new_y))
         x = new_x;
 }
 
@@ -210,3 +212,4 @@ void Player::Render(const Camera &camera)
 
     prev_state = state;
 }
+
