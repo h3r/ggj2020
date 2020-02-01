@@ -2,9 +2,8 @@
 
 #include "Vector2.hpp"
 
-// class Player;
-
 class Player;
+class Level;
 
 class Camera
 {
@@ -17,9 +16,9 @@ public:
     
     void getPosition(short& x, short& y) const;
 
-    void Update();
+    void Update(const Vector2& target, const Level& level);
     void Shake(unsigned int amount, unsigned int length);
-    void LookAt(const Vector2& position, bool smoothing = false);
+    void LookAt(const Vector2& target, const Level& level, bool smoothing = false);
 
 private:
     

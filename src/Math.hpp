@@ -21,10 +21,10 @@ constexpr const T& clamp( const T& v, const T& lo, const T& hi )
     return (v < lo) ? lo : (hi < v) ? hi : v;
 }
 
-template<class T>
-constexpr const T& lerp( const T& a, const T& b, const float t )
+float lerp(const int a, const int b, const float t)
 {
-    if(t < 0 || t > 1){
+    if(t < 0 || t > 1)
+    {
         printf("Bad lerp factor");
         while(1);
     }
