@@ -1,12 +1,8 @@
 #pragma once
 
 class Player;
-class Enemy;
-class Planet;
 class Camera;
-class CollectableSource;
-class Blaster;
-class Earth;
+class PlayerCopy;
 template<class T>
 class ArrayManager;
 
@@ -16,4 +12,8 @@ struct GlobalData
 {
     ArrayManager<Player> &Players;
     Camera &camera;
+    struct
+    {
+        ArrayManager<PlayerCopy> &plcopies;
+    } pl[2];
 };

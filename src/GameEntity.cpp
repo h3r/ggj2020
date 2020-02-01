@@ -32,7 +32,17 @@ void GameEntity::getDimensions(short &w, short &h) const
     h = this->h;
 }
 
-bool GameEntity::Collides(const GameEntity &other, short x, short y)
+short GameEntity::getWidth() const
+{
+    return w;
+}
+
+short GameEntity::getHeight() const
+{
+    return h;
+}
+
+bool GameEntity::Collides(const GameEntity &other, short x, short y) const
 {
     if (active && other.isActive())
     {

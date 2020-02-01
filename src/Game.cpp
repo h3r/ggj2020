@@ -16,6 +16,7 @@
 #include "Menu.h"
 #include "Level.hpp"
 #include "Player.hpp"
+#include "PlayerCopy.hpp"
 #include "ArrayManager.hpp"
 #include "Camera.hpp"
 #include "Serial.h"
@@ -149,12 +150,67 @@ static void GameLoop(const size_t players)
     player_array[0].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 64);
     player_array[1].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 64);
 
+    // Dirty hack, but I want PlayerCopy to inherit from GameEntity!
+    PlayerCopy plcopy[2][16] =
+    {
+        {
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0]),
+            PlayerCopy(player_array[0])
+        },
+
+        {
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1]),
+            PlayerCopy(player_array[1])
+        }
+    };
+
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
+
+    ArrayManager<PlayerCopy> pl0copies(ARRAY_SIZE(*plcopy), plcopy[0]);
+    ArrayManager<PlayerCopy> pl1copies(ARRAY_SIZE(*plcopy), plcopy[1]);
 
     GlobalData data =
     {
         pl, // ArrayManager<Player>& Players;
-        cam // Camera
+        cam, // Camera
+        {
+            pl0copies,
+            pl1copies
+        }
     };
 
     cam.Shake(10, 100);

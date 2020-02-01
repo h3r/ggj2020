@@ -41,9 +41,12 @@ enum pl_direction
     RIGHT
 };
 
+#define PLAYER_SZ ((short)64)
+#define LAST_MOVEMENTS_BUF_SIZE 16
+
 class Player : public GameEntity
 {
-    
+
 public:
     enum playern
     {
@@ -62,6 +65,7 @@ public:
     void Push(int x, int y);
     bool CreateCopy(int x, int y);
     void Reset(){/*todo*/}
+    void GetLastMovements(const short **last_x_buf, const short **last_y_buf, const GsSprite **spr_buf) const __attribute__((nonnull));
 
 private:
     const enum playern mId;
@@ -70,6 +74,8 @@ private:
     pl_direction dir;
     AnimatedSprite running, jumping, idle, rolling, falling;
     unsigned int hp;
+    short last_x[LAST_MOVEMENTS_BUF_SIZE], last_y[LAST_MOVEMENTS_BUF_SIZE];
+    GsSprite last_sprites[LAST_MOVEMENTS_BUF_SIZE];
 };
 
 #endif /* PLAYER_H */

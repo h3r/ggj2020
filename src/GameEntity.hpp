@@ -21,7 +21,9 @@ public:
     void setPos(short x, short y);
     TileType type;
     void getDimensions(short &w, short &h) const;
-    virtual bool Collides(const GameEntity &other, short x, short y);
+    short getWidth() const;
+    short getHeight() const;
+    virtual bool Collides(const GameEntity &other, short x, short y) const;
 
 protected:
     bool active;

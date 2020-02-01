@@ -38,8 +38,6 @@
  * Types definition
  * *************************************/
 
-#define PLAYER_SZ ((short)64)
-
 /* *************************************
  * Global variables definition
  * *************************************/
@@ -289,3 +287,11 @@ void Player::Render(const Camera &camera)
     prev_state = state;
 }
 
+void Player::GetLastMovements(const short **const last_x_buf,
+                              const short **const last_y_buf,
+                              const GsSprite **const spr_buf) const
+{
+    *last_x_buf = last_x;
+    *last_y_buf = last_y;
+    *spr_buf = last_sprites;
+}
