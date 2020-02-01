@@ -128,9 +128,11 @@ static void GameInit(const size_t players)
     }
 }
 
+static GsSprite gatete;
+
 static void GameInitFiles(void)
 {
-    Player::Init();
+    Player::Init(&gatete);
     level.LoadAssets();
     level.TestLevel();
     GfxSpriteFromFile("DATA\\SPRITES\\test.TIM", &test_sprite);
@@ -143,10 +145,10 @@ static void GameLoop(const size_t players)
     (void)players;
 
     // Players
-    Player player_array[2] =
+    Player player_array[1] =
     {
-        {Player::PLAYER_ONE, players > Player::PLAYER_ONE},
-        {Player::PLAYER_TWO, players > Player::PLAYER_TWO}
+        {Player::PLAYER_ONE, players > Player::PLAYER_ONE, gatete},
+        //{Player::PLAYER_TWO, players > Player::PLAYER_TWO, gatete}
     };
 
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
@@ -158,32 +160,6 @@ static void GameLoop(const size_t players)
         // Camera &cam;
         cam
     };
-
-    const animation_config c =
-    {
-        // w
-        64,
-        // h
-        64,
-        // nticks
-        4,
-        // loop
-        true,
-        // start_frame
-        0,
-        // end_frame
-        4,
-        // cb
-        nullptr
-    };
-
-    GsSprite anitest;
-
-    GfxSpriteFromFile("DATA\\SPRITES\\gatete.TIM", &anitest);
-
-    AnimatedSprite walk_animation(anitest, c);
-
-    walk_animation.SetPos((X_SCREEN_RESOLUTION >> 1) - 64, (Y_SCREEN_RESOLUTION >> 1) - 64);
 
     test_sprite.x = (X_SCREEN_RESOLUTION >> 1) - 32;
     test_sprite.y = (Y_SCREEN_RESOLUTION >> 1) - 32;
@@ -207,8 +183,6 @@ static void GameLoop(const size_t players)
         GfxSortSprite(&test_sprite);
 
         pl.render(cam);
-        walk_animation.Update();
-        walk_animation.Render(cam);
         GfxDrawScene();
     }
 }

@@ -20,8 +20,18 @@
 #include "ArrayManager.hpp"
 #include "GameEntity.hpp"
 #include "GlobalData.hpp"
+#include "AnimatedSprite.hpp"
 #include <stddef.h>
 #include <stdbool.h>
+#include <psxgpu.h>
+
+enum pl_state
+{
+    IDLE,
+    RUNNING,
+    JUMPING,
+    ROLLING,
+};
 
 class Player : public GameEntity
 {
@@ -32,16 +42,20 @@ public:
         PLAYER_TWO
     };
 
-    Player(const playern player_n, const bool active);
+    Player(const playern player_n, const bool active, const GsSprite &base_spr);
 
-    static void Init();
+    static void Init(GsSprite *spr);
 
     void Update(GlobalData &gData) override;
     void Render(const Camera &camera) override;
 
+    void SetState(pl_state state);
+
 private:
     const enum playern mId;
     Pad pad;
+    pl_state state, prev_state;
+    AnimatedSprite running, jumping, idle, rolling;
 };
 
 #endif /* PLAYER_H */

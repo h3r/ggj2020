@@ -6,18 +6,29 @@
 #include <stdio.h>
 #include <string.h>
 
-AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config &c) :
+AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *const args) :
     c(c),
     // Remember original width/height and texture page.
     base_w(base_spr.w),
-    start_tpage(base_spr.tpage),
-    start_u(base_spr.u + ((c.start_frame * c.w) % base_w)),
+    tpage_div(COLORMODE(spr.attribute) == COLORMODE_16BPP ?
+                GFX_TPAGE_WIDTH
+            :COLORMODE(spr.attribute) == COLORMODE_8BPP ?
+                GFX_TPAGE_WIDTH << 1
+            :COLORMODE(spr.attribute) == COLORMODE_4BPP ?
+                GFX_TPAGE_WIDTH << 2: 1),
+    start_tpage(base_spr.u + ((c.start_frame * c.w) % base_w) <= MAX_SIZE_FOR_GSSPRITE ?
+                    base_spr.tpage
+                :   base_spr.tpage + (base_spr.u + (c.start_frame * c.w) / tpage_div)),
+    start_u(base_spr.u + ((c.start_frame * c.w) % base_w) <= MAX_SIZE_FOR_GSSPRITE ?
+            base_spr.u + ((c.start_frame * c.w) % base_w)
+            :base_spr.u + ((c.start_frame * c.w) % tpage_div)),
     start_v(base_spr.v + (((c.start_frame * c.w) / base_w) * c.h)),
     x(0),
     y(0),
     ticks_c(0),
     frames_c(0),
-    finished(false)
+    finished(false),
+    args(args)
 {
     // Sprite is already assumed to be loaded.
     if (!base_spr.w || !base_spr.h || !base_spr.tpage)
@@ -33,12 +44,15 @@ AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config 
 
     spr.u = start_u;
     spr.v = start_v;
+    spr.tpage = start_tpage;
 
     spr.w = c.w;
     spr.h = c.h;
+
+    printf("bu=%d,sf=%d,t=%d\n", base_spr.u, c.start_frame, start_tpage);
 }
 
-void AnimatedSprite::Update()
+void AnimatedSprite::PreRender()
 {
     if (not finished)
     {
@@ -61,7 +75,7 @@ void AnimatedSprite::Update()
                 else if (c.cb)
                 {
                     finished = true;
-                    c.cb(*this);
+                    c.cb(*this, args);
                 }
             }
             else if (new_u >= base_w + start_u)
@@ -72,28 +86,24 @@ void AnimatedSprite::Update()
             }
             else if (new_u >= MAX_SIZE_FOR_GSSPRITE)
             {
-                unsigned char tpage_inc;
+                uint8_t tpage_inc;
 
                 switch (COLORMODE(spr.attribute))
                 {
-                    case COLORMODE_4BPP:
-                        tpage_inc = MAX_SIZE_FOR_GSSPRITE >> (GFX_TPAGE_WIDTH_BITSHIFT + 2);
+                    case COLORMODE_16BPP:
+                        tpage_inc = MAX_SIZE_FOR_GSSPRITE >> GFX_TPAGE_WIDTH_BITSHIFT;
                         break;
 
                     case COLORMODE_8BPP:
                         tpage_inc = MAX_SIZE_FOR_GSSPRITE >> (GFX_TPAGE_WIDTH_BITSHIFT + 1);
                         break;
 
-                    case COLORMODE_16BPP:
-                        tpage_inc = MAX_SIZE_FOR_GSSPRITE >> GFX_TPAGE_WIDTH_BITSHIFT;
+                    case COLORMODE_4BPP:
+                        tpage_inc = MAX_SIZE_FOR_GSSPRITE >> (GFX_TPAGE_WIDTH_BITSHIFT + 2);
                         break;
-
-                    default:
-                        return;
                 }
 
                 spr.u = 0;
-
                 spr.tpage += tpage_inc;
             }
             else
@@ -106,6 +116,8 @@ void AnimatedSprite::Update()
 
 void AnimatedSprite::Render(const Camera &cam)
 {
+    PreRender();
+
     spr.x = x;
     spr.y = y;
 
@@ -125,5 +137,7 @@ void AnimatedSprite::Repeat()
     finished = false;
     spr.u = start_u;
     spr.v = start_v;
+    spr.tpage = start_tpage;
+    ticks_c = 0;
     frames_c = 0;
 }

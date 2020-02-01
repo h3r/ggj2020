@@ -8,7 +8,7 @@
 
 class AnimatedSprite;
 
-typedef void (*animation_end_cb)(AnimatedSprite &ani);
+typedef void (*animation_end_cb)(AnimatedSprite &ani, void* args);
 
 struct animation_config
 {
@@ -22,8 +22,7 @@ struct animation_config
 class AnimatedSprite
 {
 public:
-    AnimatedSprite(const GsSprite &base_spr, const animation_config &c);
-    void Update();
+    AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *args);
     void Render(const Camera &cam);
     void SetPos(short x, short y);
     void Repeat();
@@ -32,10 +31,14 @@ private:
     const animation_config c;
     const short base_w;
     GsSprite spr;
+    const short tpage_div;
     const uint8_t start_tpage;
     const short start_u, start_v;
     short x, y;
     uint16_t ticks_c;
     uint8_t frames_c;
     bool finished;
+    void *const args;
+
+    void PreRender();
 };
