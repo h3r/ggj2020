@@ -1,4 +1,4 @@
-#include "Utils.hpp"
+#include "Utils.h"
 #include "Gfx.h"
 #include "psxgpu.h"
 #include <string.h>
@@ -25,7 +25,7 @@ int rand_min_max(const int min, const int max)
 
 GsLine CreateLine(const struct vec2 begin, const struct vec2 end, unsigned char r, unsigned char g, unsigned char b, bool drawLine)
 {
-    GsLine line = {0, 0, 0, {0, 0}, {0, 0}, 0};
+    GsLine line = {0};
     // Init values
     line.r = r;
     line.g = g;
@@ -62,7 +62,7 @@ void LoadCharTileSet(void){
 //str must be null terminated
 void DrawText(const char *str, unsigned short x, unsigned short y){
     size_t i = 0;
-    
+
     char_tile_set.y = y;
 
     while(str[i] != '\0'){
@@ -74,7 +74,7 @@ void DrawText(const char *str, unsigned short x, unsigned short y){
         char_tile_set.x = x + pos * CHAR_WIDTH;
         char_tile_set.u = char_tile_set_zero_u + CHAR_WIDTH*(c % CHARS_PER_ROW);
         char_tile_set.v = char_tile_set_zero_v + CHAR_HEIGHT*(c / CHARS_PER_ROW);
-        
+
         GfxSortSprite(&char_tile_set);
     }
 }
