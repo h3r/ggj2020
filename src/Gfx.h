@@ -33,6 +33,27 @@
 
 #define SPRITE_INDEX_INVALID    (size_t)(0xFFFFFFFF)
 
+/*******************************************************************//**
+*
+* \brief    Maximum size for a GsSprite instance supported by PSX
+*           hardware.
+*
+*           Even if user can use big sprites e.g.: 384x240 px, PSX
+*           hardware can only support up to 255x255 px primitives.
+*           Bigger sprites are then split into two primitives and drawn
+*           separately.
+*
+* \see      GfxSortSprite().
+*
+************************************************************************/
+#define MAX_SIZE_FOR_GSSPRITE   ((short)256)
+
+enum
+{
+    GFX_TPAGE_WIDTH = 64,
+    GFX_TPAGE_WIDTH_BITSHIFT = __builtin_ctz(GFX_TPAGE_WIDTH)
+};
+
 #ifdef __cplusplus
 extern "C"
 {

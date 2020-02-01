@@ -51,7 +51,6 @@
 // Static method
 void Player::Init()
 {
-
 }
 
 Player::Player(const playern player_n, const bool active) :
@@ -63,9 +62,11 @@ Player::Player(const playern player_n, const bool active) :
 
 void Player::Update(GlobalData &gData)
 {
+    (void)gData;
     pad.handler();
 }
 
 void Player::Render(const Camera &camera)
 {
+    (void)camera;
 }

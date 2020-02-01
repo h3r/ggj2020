@@ -52,7 +52,7 @@ Level::Level() : width(0), height(0){
 }
 
 void Level::Update(GlobalData& data){
-
+	(void)data;
 }
 
 void Level::Render(const Camera& cam){

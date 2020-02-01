@@ -10,7 +10,7 @@ AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config 
     c(c),
     // Remember original width/height and texture page.
     base_w(base_spr.w),
-    n_frames(c.end_frame - c.start_frame + 1),
+    start_tpage(base_spr.tpage),
     start_u(base_spr.u + ((c.start_frame * c.w) % base_w)),
     start_v(base_spr.v + (((c.start_frame * c.w) / base_w) * c.h)),
     x(0),
@@ -47,6 +47,7 @@ void AnimatedSprite::Update()
             ticks_c = 0;
 
             const short new_u = (short)spr.u + spr.w;
+            const uint8_t n_frames = c.end_frame - c.start_frame + 1;
 
             if (++frames_c >= n_frames)
             {
@@ -55,10 +56,10 @@ void AnimatedSprite::Update()
                     spr.u = start_u;
                     spr.v = start_v;
                     frames_c = 0;
+                    spr.tpage = start_tpage;
                 }
                 else if (c.cb)
                 {
-                    printf("finished\n");
                     finished = true;
                     c.cb(*this);
                 }
@@ -67,6 +68,33 @@ void AnimatedSprite::Update()
             {
                 spr.u = start_u;
                 spr.v += spr.h;
+                spr.tpage = start_tpage;
+            }
+            else if (new_u >= MAX_SIZE_FOR_GSSPRITE)
+            {
+                unsigned char tpage_inc;
+
+                switch (COLORMODE(spr.attribute))
+                {
+                    case COLORMODE_4BPP:
+                        tpage_inc = MAX_SIZE_FOR_GSSPRITE >> (GFX_TPAGE_WIDTH_BITSHIFT + 2);
+                        break;
+
+                    case COLORMODE_8BPP:
+                        tpage_inc = MAX_SIZE_FOR_GSSPRITE >> (GFX_TPAGE_WIDTH_BITSHIFT + 1);
+                        break;
+
+                    case COLORMODE_16BPP:
+                        tpage_inc = MAX_SIZE_FOR_GSSPRITE >> GFX_TPAGE_WIDTH_BITSHIFT;
+                        break;
+
+                    default:
+                        return;
+                }
+
+                spr.u = 0;
+
+                spr.tpage += tpage_inc;
             }
             else
             {
@@ -80,6 +108,8 @@ void AnimatedSprite::Render(const Camera &cam)
 {
     spr.x = x;
     spr.y = y;
+
+    (void)cam;
 
     GfxSortSprite(&spr);
 }

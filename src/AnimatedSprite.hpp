@@ -32,7 +32,7 @@ private:
     const animation_config c;
     const short base_w;
     GsSprite spr;
-    const uint8_t n_frames;
+    const uint8_t start_tpage;
     const short start_u, start_v;
     short x, y;
     uint16_t ticks_c;

@@ -28,7 +28,7 @@
 
 enum
 {
-    FILE_BUFFER_SIZE = (182 << 10)
+    FILE_BUFFER_SIZE = 182 << 10
 };
 
 /* *************************************
@@ -103,8 +103,6 @@ const uint8_t *IOLoadFile(const char* const strFilePath, size_t* const fileSize)
              * so copy its contents into an auxilar buffer if needed. */
             static uint8_t fileBuffer[FILE_BUFFER_SIZE];
 
-            memset(fileBuffer, 0, sizeof (fileBuffer));
-
 #ifdef SERIAL_INTERFACE
             return IOLoadFileFromSerial(buffer, fileSize, fileBuffer);
 #else /* SERIAL_INTERFACE */
@@ -128,18 +126,8 @@ const uint8_t *IOLoadFile(const char* const strFilePath, size_t* const fileSize)
 #ifndef SERIAL_INTERFACE
 static const uint8_t *IOLoadFileFromCd(char* const buffer, size_t* const fileSize, uint8_t *const fileBuffer)
 {
-    InterruptsDisableInt(INT_SOURCE_VBLANK);
-    InterruptsDisableInt(INT_SOURCE_RCNT0);
-    InterruptsDisableInt(INT_SOURCE_RCNT1);
-    InterruptsDisableInt(INT_SOURCE_RCNT2);
-
     /* Get file data from input file path. */
     FILE* pFile = fopen((char*)buffer, "r");
-
-    InterruptsEnableInt(INT_SOURCE_VBLANK);
-    InterruptsEnableInt(INT_SOURCE_RCNT0);
-    InterruptsEnableInt(INT_SOURCE_RCNT1);
-    InterruptsEnableInt(INT_SOURCE_RCNT2);
 
     if (pFile != NULL)
     {
@@ -154,7 +142,7 @@ static const uint8_t *IOLoadFileFromCd(char* const buffer, size_t* const fileSiz
                 /* Return file size in bytes to upper layers. */
                 *fileSize = ftell(pFile);
 
-                if (*fileSize < FILE_BUFFER_SIZE)
+                if (*fileSize <= FILE_BUFFER_SIZE)
                 {
                     /* Buffer was successfully allocated according
                      * to file size. Now read file data into buffer. */
@@ -194,6 +182,8 @@ static const uint8_t *IOLoadFileFromCd(char* const buffer, size_t* const fileSiz
                 {
                     /* Buffer cannot hold such amount of data.
                      * Fall through. */
+                    printf("%s does not fit into internal buffer (%ld / %ld bytes)\n",
+                            buffer, *fileSize, FILE_BUFFER_SIZE);
                 }
 
                 /* Set file size to an invalid value. */

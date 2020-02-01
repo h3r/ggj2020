@@ -116,6 +116,8 @@ static void GameInit(const size_t players)
 {
     static bool initDone;
 
+    (void)players;
+
     if (!initDone)
     {
         /* Load needed files. */
@@ -134,14 +136,11 @@ static void GameInitFiles(void)
     GfxSpriteFromFile("DATA\\SPRITES\\test.TIM", &test_sprite);
 }
 
-static void ani_finished(AnimatedSprite &ani)
-{
-    printf("yo\n");
-}
-
 static void GameLoop(const size_t players)
 {
     Camera cam;
+
+    (void)players;
 
     // Players
     Player player_array[2] =
@@ -163,24 +162,24 @@ static void GameLoop(const size_t players)
     const animation_config c =
     {
         // w
-        48,
+        64,
         // h
-        48,
+        64,
         // nticks
         4,
         // loop
-        false,
+        true,
         // start_frame
         0,
         // end_frame
-        3,
+        4,
         // cb
-        ani_finished
+        nullptr
     };
 
     GsSprite anitest;
 
-    GfxSpriteFromFile("DATA\\SPRITES\\anitest.TIM", &anitest);
+    GfxSpriteFromFile("DATA\\SPRITES\\gatete.TIM", &anitest);
 
     AnimatedSprite walk_animation(anitest, c);
 

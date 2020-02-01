@@ -50,7 +50,8 @@ static uint64_t timer;
 
 Pad::Pad(const unsigned int _pad_n) :
     rawData{0},
-    prev{0},
+    prev{},
+    state{},
     pad_n(_pad_n)
 {
 }

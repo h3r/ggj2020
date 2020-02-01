@@ -18,7 +18,7 @@ DEFINE = -DFIXMATH_FAST_SIN -DVIDEO_MODE=VMODE_PAL
 
 # Compiler flags
 LIBS= -lfixmath -lm
-CC_FLAGS = -Wall -c -Os -ffunction-sections -fdata-sections -Wfatal-errors -Werror -flto
+CC_FLAGS = -Wall -c -Os -g -ffunction-sections -fdata-sections -Wfatal-errors -Werror -flto -Wextra
 CXX_FLAGS = $(CC_FLAGS) -std=c++17
 
 # Path definitions
@@ -54,7 +54,7 @@ OBJECTS = $(addprefix $(OBJ_DIR)/,	\
 			Menu.o Game.o FileData.o Player.o Timers.o	\
 			Pad.o Serial.o Camera.o Level.o \
 			Player.o Vector2.o ArrayManager.o \
-			MultiSpriteEntity.o AnimatedSprite.o GameEntity.o)
+			AnimatedSprite.o GameEntity.o)
 
 # Source dependencies:
 DEPS = $(OBJECTS:.o=.d)
@@ -77,7 +77,8 @@ SOUND_OBJECTS = $(addprefix $(OBJ_SOUNDS_DIR)/,	)
 BMP2TIM = bmp2tim
 SRC_SPRITES_PATH = $(PROJECT_DIR)/src/sprites
 OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
-SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, test.TIM anitest.TIM tileset.TIM)
+SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, test.TIM \
+					anitest.TIM tileset.TIM gatete.TIM)
 
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,

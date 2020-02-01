@@ -25,21 +25,6 @@
  * Defines
  * *************************************/
 
-/*******************************************************************//**
-*
-* \brief    Maximum size for a GsSprite instance supported by PSX
-*           hardware.
-*
-*           Even if user can use big sprites e.g.: 384x240 px, PSX
-*           hardware can only support up to 255x255 px primitives.
-*           Bigger sprites are then split into two primitives and drawn
-*           separately.
-*
-* \see      GfxSortSprite().
-*
-************************************************************************/
-#define MAX_SIZE_FOR_GSSPRITE   ((short)256)
-
 /* *****************************************************************************
  * Types definition
  * ****************************************************************************/
@@ -349,12 +334,6 @@ void GfxDrawRectangle(GsRectangle* const rect)
 *******************************************************************************/
 static void GfxSortBigSprite(GsSprite *const psSpr)
 {
-    enum
-    {
-        GFX_TPAGE_WIDTH = 64,
-        GFX_TPAGE_WIDTH_BITSHIFT = __builtin_ctz(GFX_TPAGE_WIDTH)
-    };
-
     /* On the other hand, GsSprite instances bigger than
      * 256x256 px must be split into two primitives, so
      * GsSortSprite shall be called twice. */
