@@ -20,12 +20,11 @@ public:
 	void Render(const Camera& cam);
 	bool Load(const char* file_name);
 	bool LoadAssets();
-	void TestLevel();
 
 	void GetDimensions(short& w, short& h) const;
 
 private:
-	bool levelLoaded;
+	bool level_loaded;
 
 	unsigned short width;
 	unsigned short height;
