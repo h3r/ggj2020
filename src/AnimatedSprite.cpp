@@ -120,7 +120,7 @@ void AnimatedSprite::Render(const Camera &cam)
     spr.x = x;
     spr.y = y;
 
-    (void)cam;
+    cam.getPosition(spr.x,spr.y);
 
     GfxSortSprite(&spr);
 }

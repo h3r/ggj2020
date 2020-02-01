@@ -20,9 +20,21 @@
  * *************************************/
 enum{
 	LEVEL_TILE_EMPTY,
-	LEVEL_TILE_GROUND,
-
-
+	LEVEL_TILE_EMPTY_2,
+	LEVEL_TILE_EMPTY_3,
+	LEVEL_TILE_GROUND_FILL,
+	LEVEL_TILE_GROUND_T,
+	LEVEL_TILE_GROUND_T2,
+	LEVEL_TILE_GROUND_T3,
+	LEVEL_TILE_GROUND_T4,
+	LEVEL_TILE_GROUND_TL,
+	LEVEL_TILE_GROUND_TR,
+	LEVEL_TILE_GROUND_BL,
+	LEVEL_TILE_GROUND_BR,
+	LEVEL_TILE_GROUND_B,
+	LEVEL_TILE_GROUND_B2,
+	LEVEL_TILE_GROUND_L,
+	LEVEL_TILE_GROUND_R,
 
 
 	LEVEL_MAX_TILES
@@ -55,15 +67,15 @@ void Level::Update(GlobalData& data){
 }
 
 void Level::Render(const Camera& cam){
-	for(uint8_t i=0; i<width; i++){
-		for(uint8_t j=0; j<height; j++){
+	for(size_t i=0; i<width; i++){
+		for(size_t j=0; j<height; j++){
 			tile_set.x = i * TILE_SIZE;
 			tile_set.y = j * TILE_SIZE;
 			cam.getPosition(tile_set.x, tile_set.y);
 
-			const uint8_t tile = tiles[i + j*tile_set_width_tiles];
-			tile_set.u = tile_set_zero_u + (TILE_SIZE*tile)%tile_set_total_width;
-			tile_set.v = tile_set_zero_v + (TILE_SIZE*tile)/tile_set_total_width;
+			const uint8_t tile = tiles[i + j*width];
+			tile_set.u = tile_set_zero_u + TILE_SIZE*(tile%tile_set_width_tiles);
+			tile_set.v = tile_set_zero_v + TILE_SIZE*(tile/tile_set_width_tiles);
 
 			GfxSortSprite(&tile_set);
 		}
@@ -100,23 +112,71 @@ bool Level::LoadAssets(){
 	tile_set_zero_v = tile_set.v;
 
 	tile_set_width_tiles = tile_set_total_width / TILE_SIZE;
-//	tile_set_height_tiles = tile_set_total_height / TILE_SIZE;
 	tile_set.w = tile_set.h = TILE_SIZE;
 	return ret;
 }
 
 void Level::TestLevel(){
-	width = MAX_LEVEL_SIZE_WIDTH;
-	height = MAX_LEVEL_SIZE_HEIGHT;
-	size = width * height;
-	for(size_t i=0; i<size; i++){
-		size_t x = i % width;
-		size_t y = i / height;
+/*
+32 8
+................................
+.........___....................
+...___..................________
+...._...._____............._____
+................____..........._
+.....__________........_________
+.....................___________
+________________________________
+*/
 
-		if(y < x*x)
-			tiles[i] = LEVEL_TILE_GROUND;
-		else
-			tiles[i] = LEVEL_TILE_EMPTY;
+	width = 32;
+	height = 8;
+
+	for(size_t i=0; i<width; i++){
+		for(size_t j=0; j<height; j++){
+			if(j == (unsigned short)(height-1)) tiles[i+j*width] = LEVEL_TILE_GROUND_T;
+			else tiles[i+j*width] = LEVEL_TILE_EMPTY;
+		}
+	}
+
+	for(size_t i=0; i<3; i++){
+		tiles[9+i+width] = LEVEL_TILE_GROUND_T;
+	}
+
+	for(size_t i=0; i<3; i++){
+		tiles[3+i+2*width] = LEVEL_TILE_GROUND_T;
+	}
+
+	for(size_t i=0; i<8; i++){
+		tiles[24+i+2*width] = LEVEL_TILE_GROUND_T;
+	}
+
+	tiles[4+3*width] = LEVEL_TILE_GROUND_T;
+
+	for(size_t i=0; i<5; i++){
+		tiles[9+i+3*width] = LEVEL_TILE_GROUND_T;
+	}
+
+	for(size_t i=0; i<5; i++){
+		tiles[27+i+3*width] = LEVEL_TILE_GROUND_T;
+	}
+
+	for(size_t i=0; i<4; i++){
+		tiles[16+i+4*width] = LEVEL_TILE_GROUND_T;
+	}
+
+	tiles[31+4*width] = LEVEL_TILE_GROUND_T;
+
+	for(size_t i=0; i<10; i++){
+		tiles[5+i+5*width] = LEVEL_TILE_GROUND_T;
+	}
+
+	for(size_t i=0; i<9; i++){
+		tiles[23+i+5*width] = LEVEL_TILE_GROUND_T;
+	}
+
+	for(size_t i=0; i<11; i++){
+		tiles[21+i+6*width] = LEVEL_TILE_GROUND_T;
 	}
 }
 
