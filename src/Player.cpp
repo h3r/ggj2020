@@ -28,6 +28,10 @@
  * Defines
  * *************************************/
 
+#define RUNNING_SPEED ((short)4)
+#define JUMP_SPEED ((short)5)
+#define ROLLING_SPEED ((short)3)
+
 /* *************************************
  * Types definition
  * *************************************/
@@ -94,10 +98,11 @@ Player::Player(const playern player_n, const bool active, const GsSprite &base_s
     pad(player_n),
     state(IDLE),
     prev_state(state),
-    running(base_spr, animation_config{64, 64, 4, true, 16, 21, nullptr}, this),
-    jumping(base_spr, animation_config{64, 64, 6, false, 0, 4, jumping_finished}, this),
-    idle(base_spr, animation_config{64, 64, 12, true, 5, 7, nullptr}, this),
-    rolling(base_spr, animation_config{64, 64, 6, false, 8, 15, rolling_finished}, this)
+    dir(RIGHT),
+    running(base_spr, animation_config{64, 64, 4, true, 16, 21, nullptr}, this, "running"),
+    jumping(base_spr, animation_config{64, 64, 4, false, 0, 4, jumping_finished}, this, "jumping"),
+    idle(base_spr, animation_config{64, 64, 8, true, 5, 7, nullptr}, this, "idle"),
+    rolling(base_spr, animation_config{64, 64, 4, false, 8, 15, rolling_finished}, this, "rolling")
 {
 }
 
@@ -109,11 +114,50 @@ void Player::Update(GlobalData &gData)
 
     switch (state)
     {
+        case RUNNING:
+            if (pad.released(Pad::LEFT) || pad.released(Pad::RIGHT))
+                state = IDLE;
+            // Fall through.
         case IDLE:
             if (pad.singlePress(Pad::CROSS))
                 state = JUMPING;
             else if (pad.singlePress(Pad::CIRCLE))
                 state = ROLLING;
+            else if (pad.keyPressed(Pad::LEFT))
+            {
+                short x, y;
+                getPos(x, y);
+                setPos(x - RUNNING_SPEED, y);
+                state = RUNNING;
+                dir = LEFT;
+            }
+            else if (pad.keyPressed(Pad::RIGHT))
+            {
+                short x, y;
+                getPos(x, y);
+                setPos(x + RUNNING_SPEED, y);
+                state = RUNNING;
+                dir = RIGHT;
+            }
+
+            break;
+
+        case JUMPING:
+        {
+            short x, y;
+            const short speed = dir == RIGHT ? JUMP_SPEED : -JUMP_SPEED;
+            getPos(x, y);
+            setPos(x + speed, y);
+        }
+            break;
+
+        case ROLLING:
+        {
+            short x, y;
+            const short speed = dir == RIGHT ? ROLLING_SPEED : -ROLLING_SPEED;
+            getPos(x, y);
+            setPos(x + speed, y);
+        }
             break;
 
         default:
@@ -123,35 +167,48 @@ void Player::Update(GlobalData &gData)
 
 void Player::Render(const Camera &camera)
 {
-    if (state != prev_state)
-    {
-        idle.Repeat();
-        running.Repeat();
-        rolling.Repeat();
-        jumping.Repeat();
-    }
+    AnimatedSprite *ani;
 
     switch (state)
     {
         case IDLE:
-            idle.Render(camera);
+            ani = &idle;
             break;
 
         case RUNNING:
-            running.Render(camera);
+            ani = &running;
             break;
 
         case ROLLING:
-            rolling.Render(camera);
+            ani = &rolling;
             break;
 
         case JUMPING:
-            jumping.Render(camera);
+            ani = &jumping;
             break;
 
         default:
             return;
     }
+
+    if (state != prev_state)
+    {
+        ani->Repeat();
+    }
+
+    switch (dir)
+    {
+        case LEFT:
+            ani->SetSprAttribute(ani->GetSprAttribute() | H_FLIP);
+            break;
+
+        case RIGHT:
+            ani->SetSprAttribute(ani->GetSprAttribute() & ~H_FLIP);
+            break;
+    }
+
+    ani->SetPos(x, y);
+    ani->Render(camera);
 
     prev_state = state;
 }

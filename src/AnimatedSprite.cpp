@@ -6,29 +6,31 @@
 #include <stdio.h>
 #include <string.h>
 
-AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *const args) :
+AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *const args, const char *const id) :
     c(c),
+    spr(base_spr),
     // Remember original width/height and texture page.
     base_w(base_spr.w),
-    tpage_div(COLORMODE(spr.attribute) == COLORMODE_16BPP ?
+    tpage_div(COLORMODE(base_spr.attribute) == COLORMODE_16BPP ?
                 GFX_TPAGE_WIDTH
-            :COLORMODE(spr.attribute) == COLORMODE_8BPP ?
+             :COLORMODE(base_spr.attribute) == COLORMODE_8BPP ?
                 GFX_TPAGE_WIDTH << 1
-            :COLORMODE(spr.attribute) == COLORMODE_4BPP ?
+             :COLORMODE(base_spr.attribute) == COLORMODE_4BPP ?
                 GFX_TPAGE_WIDTH << 2: 1),
-    start_tpage(base_spr.u + ((c.start_frame * c.w) % base_w) <= MAX_SIZE_FOR_GSSPRITE ?
+    start_tpage(base_spr.u + ((c.start_frame * c.w) % base_w) < MAX_SIZE_FOR_GSSPRITE ?
                     base_spr.tpage
                 :   base_spr.tpage + (base_spr.u + (c.start_frame * c.w) / tpage_div)),
-    start_u(base_spr.u + ((c.start_frame * c.w) % base_w) <= MAX_SIZE_FOR_GSSPRITE ?
+    start_u(base_spr.u + ((c.start_frame * c.w) % base_w) < MAX_SIZE_FOR_GSSPRITE ?
             base_spr.u + ((c.start_frame * c.w) % base_w)
-            :base_spr.u + ((c.start_frame * c.w) % tpage_div)),
+            :(c.start_frame * c.w) % tpage_div),
     start_v(base_spr.v + (((c.start_frame * c.w) / base_w) * c.h)),
     x(0),
     y(0),
     ticks_c(0),
     frames_c(0),
     finished(false),
-    args(args)
+    args(args),
+    id(id)
 {
     // Sprite is already assumed to be loaded.
     if (!base_spr.w || !base_spr.h || !base_spr.tpage)
@@ -36,8 +38,6 @@ AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config 
         printf("No sprite has been loaded\n");
         return;
     }
-
-    spr = base_spr;
 
     spr.w = c.w;
     spr.h = c.h;
@@ -48,8 +48,6 @@ AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config 
 
     spr.w = c.w;
     spr.h = c.h;
-
-    printf("bu=%d,sf=%d,t=%d\n", base_spr.u, c.start_frame, start_tpage);
 }
 
 void AnimatedSprite::PreRender()
@@ -140,4 +138,14 @@ void AnimatedSprite::Repeat()
     spr.tpage = start_tpage;
     ticks_c = 0;
     frames_c = 0;
+}
+
+unsigned char AnimatedSprite::GetSprAttribute()
+{
+    return spr.attribute;
+}
+
+void AnimatedSprite::SetSprAttribute(const unsigned char attr)
+{
+    spr.attribute = attr;
 }

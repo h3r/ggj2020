@@ -22,15 +22,17 @@ struct animation_config
 class AnimatedSprite
 {
 public:
-    AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *args);
+    AnimatedSprite(const GsSprite &base_spr, const animation_config &c, void *args, const char *id);
     void Render(const Camera &cam);
     void SetPos(short x, short y);
     void Repeat();
+    unsigned char GetSprAttribute();
+    void SetSprAttribute(unsigned char attr);
 
 private:
     const animation_config c;
-    const short base_w;
     GsSprite spr;
+    const short base_w;
     const short tpage_div;
     const uint8_t start_tpage;
     const short start_u, start_v;
@@ -39,6 +41,7 @@ private:
     uint8_t frames_c;
     bool finished;
     void *const args;
+    const char *const id;
 
     void PreRender();
 };

@@ -10,7 +10,10 @@ public:
     virtual void Update(GlobalData &gData) = 0;
     virtual void Render(const Camera &cam) = 0;
     bool isActive() const;
+    void getPos(short &x, short &y) const;
+    void setPos(short x, short y);
 
 protected:
     bool active;
+    short x, y;
 };

@@ -33,6 +33,12 @@ enum pl_state
     ROLLING,
 };
 
+enum pl_direction
+{
+    LEFT,
+    RIGHT
+};
+
 class Player : public GameEntity
 {
 public:
@@ -55,6 +61,7 @@ private:
     const enum playern mId;
     Pad pad;
     pl_state state, prev_state;
+    pl_direction dir;
     AnimatedSprite running, jumping, idle, rolling;
 };
 
