@@ -49,7 +49,7 @@ void DrawLine(GsLine* line)
 }
 
 void LoadCharTileSet(void){
-    GfxSpriteFromFile("DATA\\SPRITES\\font_white.TIM", &char_tile_set);
+    GfxSpriteFromFile("DATA\\SPRITES\\font_wh.TIM", &char_tile_set);
     char_tile_set_total_width = char_tile_set.w;
     char_tile_set_total_height = char_tile_set.h;
     char_tile_set_zero_u = char_tile_set.u;
