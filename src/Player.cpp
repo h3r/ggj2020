@@ -112,24 +112,24 @@ static const box idle_box[] =
 
 static const box rolling_box[] =
 {
-    {4, 39, 53, 25},
-    {15, 41, 33, 22},
-    {25, 43, 21, 21},
-    {20, 42, 20, 22},
-    {22, 36, 27, 26},
-    {19, 31, 33, 33},
-    {9, 35, 50, 24},
-    {4, 42, 54, 20}
+    {4, 39, 52, 26},
+    {15, 41, 32, 23},
+    {25, 43, 20, 22},
+    {20, 42, 19, 23},
+    {22, 36, 26, 27},
+    {19, 31, 32, 34},
+    {9, 35, 49, 25},
+    {4, 42, 53, 21}
 };
 
 static const box running_box[] =
 {
-    {1, 47, 53, 20},
-    {8, 44, 53, 18},
-    {5, 42, 52, 22},
-    {7, 44, 52, 18},
-    {3, 38, 54, 26},
-    {3, 38, 53, 26}
+    {1, 43, 52, 21},
+    {8, 44, 52, 18},
+    {5, 42, 51, 22},
+    {7, 44, 54, 18},
+    {3, 38, 53, 26},
+    {3, 38, 52, 26}
 };
 
 Player::Player(const playern player_n, const bool active, const GsSprite &base_spr) :
@@ -140,8 +140,8 @@ Player::Player(const playern player_n, const bool active, const GsSprite &base_s
     prev_state(state),
     dir(RIGHT),
     running(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, true, 16, 21, nullptr}, running_box, this),
-    jumping(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, false, 0, 4, jumping_finished}, jumping_box, this),
-    idle(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 8, true, 5, 7, nullptr}, idle_box, this),
+    jumping(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 5, false, 0, 4, jumping_finished}, jumping_box, this),
+    idle(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 28, true, 5, 7, nullptr}, idle_box, this),
     rolling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, false, 8, 15, rolling_finished}, rolling_box, this),
     falling(base_spr, animation_config{PLAYER_SZ, PLAYER_SZ, 4, true, 3, 4, nullptr}, nullptr, this),
     hp(7)
@@ -324,32 +324,9 @@ void Player::Render(const Camera &camera)
             break;
     }
 
-    b.x = x;
-    b.y = y;
-    b.w = w;
-    b.h = h;
-
-    ani->getBox(b, dir == LEFT);
-
-    static GsRectangle r;
-
-    r.x = x + b.x;
-    r.y = y + b.y;
-    r.w = b.w;
-    r.h = b.h;
-    r.r = r.g = r.b = 0xFF;
-    r.attribute = ENABLE_TRANS | TRANS_MODE(0);
-
     ani->SetPos(x, y);
-    w = PLAYER_SZ;
-    h = PLAYER_SZ;
     ani->Render(camera);
-
-    GsSortRectangle(&r);
-
-    w = b.w;
-    h = b.h;
-
+    ani->getDimensions(w, h);
     prev_state = state;
 }
 

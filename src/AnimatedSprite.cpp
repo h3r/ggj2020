@@ -26,6 +26,8 @@ AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config 
     start_v(base_spr.v + (((c.start_frame * c.w) / base_w) * c.h)),
     x(0),
     y(0),
+    u(0),
+    v(0),
     ticks_c(0),
     frames_c(0),
     finished(false),
@@ -42,12 +44,9 @@ AnimatedSprite::AnimatedSprite(const GsSprite &base_spr, const animation_config 
     spr.w = c.w;
     spr.h = c.h;
 
-    spr.u = start_u;
-    spr.v = start_v;
+    u = start_u;
+    v = start_v;
     spr.tpage = start_tpage;
-
-    spr.w = c.w;
-    spr.h = c.h;
 }
 
 void AnimatedSprite::PreRender()
@@ -58,7 +57,7 @@ void AnimatedSprite::PreRender()
         {
             ticks_c = 0;
 
-            const short new_u = (short)spr.u + spr.w;
+            const short new_u = (short)u + c.w;
             const uint8_t n_frames = c.end_frame - c.start_frame + 1;
 
             if (++frames_c >= n_frames)
@@ -67,8 +66,8 @@ void AnimatedSprite::PreRender()
 
                 if (c.loop)
                 {
-                    spr.u = start_u;
-                    spr.v = start_v;
+                    u = start_u;
+                    v = start_v;
                     spr.tpage = start_tpage;
                 }
                 else if (c.cb)
@@ -79,8 +78,8 @@ void AnimatedSprite::PreRender()
             }
             else if (new_u >= base_w + start_u)
             {
-                spr.u = start_u;
-                spr.v += spr.h;
+                u = start_u;
+                v += c.h;
                 spr.tpage = start_tpage;
             }
             else if (new_u >= MAX_SIZE_FOR_GSSPRITE)
@@ -102,65 +101,98 @@ void AnimatedSprite::PreRender()
                         break;
                 }
 
-                spr.u = 0;
+                u = 0;
                 spr.tpage += tpage_inc;
             }
             else
             {
-                spr.u = new_u;
+                u = new_u;
             }
         }
     }
+
+    const size_t i = frames_c;
+
+    if (prev_v != v || prev_u != u)
+    {
+        // Readjust sprite x/y if u/v is modified
+        // before Player sends new information.
+        SetPos(x, y);
+    }
+
+    prev_u = u;
+    prev_v = v;
+
+    if (mirror)
+    {
+        const short mirror_x = c.w - this->b[i].w - this->b[i].x;
+
+        const box ab =
+        {
+            mirror_x,
+            b[frames_c].y,
+            b[frames_c].w,
+            b[frames_c].h
+        };
+
+        spr.w = ab.w;
+        spr.h = ab.h;
+    }
+    else
+    {
+        spr.w = b[i].w;
+        spr.h = b[i].h;
+    }
+
+    spr.u = u + b[i].x;
+    spr.v = v + b[i].y;
 }
 
 void AnimatedSprite::Render(const Camera &cam)
 {
     PreRender();
 
-    spr.x = x;
-    spr.y = y;
+    static GsRectangle r;
 
-    cam.getPosition(spr.x,spr.y);
+    r.x = spr.x;
+    r.y = spr.y;
+    r.w = spr.w;
+    r.h = spr.h;
+    r.r = r.g = r.b = 0xFF;
+    r.attribute = ENABLE_TRANS | TRANS_MODE(0);
+    cam.getPosition(r.x, r.y);
+
+    cam.getPosition(spr.x, spr.y);
 
     GfxSortSprite(&spr);
-}
 
-void AnimatedSprite::getBox(box &b, const bool mirror)
-{
-    if (this->b)
-    {
-        const size_t i = frames_c;
-
-        if (mirror)
-        {
-            const short mirror_x = spr.w - this->b[i].w - this->b[i].x;
-
-            const box ab =
-            {
-                mirror_x,
-                this->b[i].y,
-                this->b[i].w,
-                this->b[i].h
-            };
-
-            b = ab;
-        }
-        else
-            b = this->b[i];
-    }
+    GsSortRectangle(&r);
 }
 
 void AnimatedSprite::SetPos(const short x, const short y)
 {
+    if (mirror)
+        spr.x = x;
+    else
+        spr.x = x + b[frames_c].x;
+
+    spr.y = y + b[frames_c].y;
+
     this->x = x;
     this->y = y;
+}
+
+void AnimatedSprite::getDimensions(short &w, short &h) const
+{
+    w = spr.w;
+    h = spr.h;
 }
 
 void AnimatedSprite::Repeat()
 {
     finished = false;
-    spr.u = start_u;
-    spr.v = start_v;
+    u = start_u;
+    v = start_v;
     spr.tpage = start_tpage;
     ticks_c = 0;
     frames_c = 0;
@@ -173,5 +205,7 @@ unsigned char AnimatedSprite::GetSprAttribute()
 
 void AnimatedSprite::SetSprAttribute(const unsigned char attr)
 {
+    mirror = attr & H_FLIP ? true : false;
+
     spr.attribute = attr;
 }

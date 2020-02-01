@@ -30,8 +30,8 @@ public:
     AnimatedSprite(const GsSprite &base_spr, const animation_config &c, const box *b, void *args) __attribute__((nonnull(1)));
     void Render(const Camera &cam);
     void SetPos(short x, short y);
+    void getDimensions(short &w, short &h) const;
     void Repeat();
-    void getBox(box &h, bool mirror);
     unsigned char GetSprAttribute();
     void SetSprAttribute(unsigned char attr);
 
@@ -42,10 +42,10 @@ private:
     const short tpage_div;
     const uint8_t start_tpage;
     const short start_u, start_v;
-    short x, y;
+    short x, y, u, v, prev_u, prev_v;
     uint16_t ticks_c;
     uint8_t frames_c;
-    bool finished;
+    bool finished, mirror;
     void *const args;
     const box *const b;
 
