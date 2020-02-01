@@ -21,7 +21,7 @@
 #include "ArrayManager.hpp"
 #include "Camera.hpp"
 #include "Serial.h"
-#include "Utils.hpp"
+#include "Utils.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
