@@ -139,8 +139,6 @@ static void GameLoop(const size_t players)
 {
     Camera cam;
 
-    (void)players;
-
     // Players
     Player player_array[2] =
     {
@@ -149,7 +147,7 @@ static void GameLoop(const size_t players)
     };
 
     player_array[0].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 64);
-    player_array[1].setPos((X_SCREEN_RESOLUTION >> 1) - 64, Y_SCREEN_RESOLUTION - 64);
+    player_array[1].setPos((X_SCREEN_RESOLUTION >> 1) - 32, Y_SCREEN_RESOLUTION - 64);
 
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
 
@@ -158,6 +156,8 @@ static void GameLoop(const size_t players)
         pl, // ArrayManager<Player>& Players;
         cam // Camera
     };
+
+    cam.Shake(10, 100);
 
     while (GfxIsBusy())
         ;
@@ -170,10 +170,8 @@ static void GameLoop(const size_t players)
         short x;
         short y;
 
-        pl.get(0)->getPos(x, y);
-        Vector2 target(x, y);
-
-        cam.Update( target, level );
+        player_array[0].getPos(x, y);
+        cam.Update( x, y, level );
 
         // Rendering
         while (GfxIsBusy())

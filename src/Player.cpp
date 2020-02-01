@@ -38,6 +38,8 @@
  * Types definition
  * *************************************/
 
+#define PLAYER_SZ ((short)64)
+
 /* *************************************
  * Global variables definition
  * *************************************/
@@ -95,7 +97,7 @@ void Player::SetState(const pl_state state)
 }
 
 Player::Player(const playern player_n, const bool active, const GsSprite &base_spr) :
-    GameEntity(active),
+    GameEntity(active, PLAYER_SZ, PLAYER_SZ),
     mId(player_n),
     pad(player_n),
     state(IDLE),
@@ -286,3 +288,4 @@ void Player::Render(const Camera &camera)
 
     prev_state = state;
 }
+

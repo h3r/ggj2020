@@ -131,7 +131,8 @@ public:
         {
             if (&mArray[i] != t)
             {
-                (void)x;(void)y;
+                if (t->Collides(mArray[i], x, y))
+                    return &mArray[i];
             }
             else
             {
