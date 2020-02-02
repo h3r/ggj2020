@@ -32,8 +32,8 @@
  * Defines
  * *************************************/
 
-#define RUNNING_SPEED ((short)4)
-#define JUMP_SPEED ((short)5)
+#define RUNNING_SPEED ((short)3)
+#define JUMP_SPEED ((short)4)
 #define ROLLING_SPEED ((short)3)
 
 #define MIN_RECORD_TIME ((unsigned int)100)
@@ -185,14 +185,14 @@ void Player::Update(GlobalData &gData)
 void Player::UpdateCollision(GlobalData &gData, const short new_x, const short new_y)
 {
     short level_w, level_h;
-    const short exc = PLAYER_SZ >> 1;
+    //const short exc = PLAYER_SZ >> 1;
 
     gData.level.GetDimensions(level_w, level_h);
 
-    if (new_x < 0 || (new_y - exc) < 0)
+    /* if (new_x < 0 || (new_y - exc) < 0)
         return;
     else if ((new_x + (exc << 1)) > level_w || (new_y + exc) > level_h)
-        return;
+        return; */
 
     GameEntity* collided_entity = gData.Players.collides(this, new_x, new_y);
 
@@ -200,7 +200,7 @@ void Player::UpdateCollision(GlobalData &gData, const short new_x, const short n
         if (!gData.level.IsTileSolid(new_x, new_y))
         {
             x = new_x;
-            y = new_y;
+            //y = new_y;
         }
     }
     else

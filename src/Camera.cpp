@@ -24,8 +24,10 @@ void Camera::Default()
 
 void Camera::getPosition(short& x, short& y) const
 {
+    int delta_ground = 85;
+
     x += ((X_SCREEN_RESOLUTION >> 1) - 32) - X;
-    y += (Y_SCREEN_RESOLUTION - 64) - Y; // Camera is not centered in Y
+    y += (Y_SCREEN_RESOLUTION - 64 - delta_ground) - Y; // Camera is not centered in Y
 }
 
 void Camera::Update(const int x, const int y, const Level& level)
