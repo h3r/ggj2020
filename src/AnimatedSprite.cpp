@@ -172,7 +172,6 @@ void AnimatedSprite::Render(const Camera &cam)
     cam.getPosition(spr.x, spr.y);
 
     GfxSortSprite(&spr);
-    GsSortRectangle(&r);
 }
 
 void AnimatedSprite::SetPos(const short x, const short y)
