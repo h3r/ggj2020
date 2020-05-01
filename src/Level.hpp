@@ -8,7 +8,7 @@ class GlobalData;
 class Camera;
 
 enum{
-	MAX_LEVEL_SIZE_WIDTH = 64,
+	MAX_LEVEL_SIZE_WIDTH = 100,
 	MAX_LEVEL_SIZE_HEIGHT = 16,
 	TILE_SIZE = 32,
 };
